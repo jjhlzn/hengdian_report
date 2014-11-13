@@ -1,0 +1,2 @@
+module NetworkOrderReportHelper
+end
