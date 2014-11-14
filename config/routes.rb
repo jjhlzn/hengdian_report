@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   get 'network_order_report/test'
   get 'network_order_report/area_compare'
+  get 'network_order_report/today_report'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

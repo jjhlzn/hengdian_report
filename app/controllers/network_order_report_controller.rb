@@ -28,6 +28,15 @@ class NetworkOrderReportController < ApplicationController
     end
   end
 
+  def today_report
+    respond_to do |format|
+      format.html
+      format.json do
+        
+      end
+    end
+  end
+
   def test
   end
 
