@@ -25,7 +25,6 @@ function send_data_request(params) {
 }
 
 function deal_resonse_json(respJSON) {
-    alert("deal with json response");
     if (respJSON.status != 0) {
         alert('服务器返回错误（status = ' + respJSON.status + ", message = " + respJSON.message + ')');
         return;
@@ -35,8 +34,6 @@ function deal_resonse_json(respJSON) {
     datasets_src = respJSON.data.datasets_src;
     datasets1 = respJSON.data.datasets1;
     datasets1_src = respJSON.data.datasets1_src;
-
-    alert("before draw lines")
 
     draw_lines( {responsive: true,
                  pointHitDetectionRadius: 1,
@@ -68,8 +65,6 @@ function draw_graph(canvas_id, datasets, datasets_src, graph_name, table_id, opt
 
     var table1 = document.getElementById(table_id);
     var topn = parseInt(params.topn);
-        console.log(params)
-    console.log("topn = " + topn)
     for (var i = 0; i < datasets_src.length; i++) {
         var tr;
         if (i < topn)

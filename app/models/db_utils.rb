@@ -14,7 +14,8 @@ class DBUtils
   def self.execute_array(sql)
     client = TinyTds::Client.new(:username => 'sa',
                                  :password => '123456',
-                                 :host => '192.168.1.108')
+                                 :host => '192.168.1.108',
+                                 :timeout => 60)
     result = client.execute(sql)
     array = []
     result.each do |row|
