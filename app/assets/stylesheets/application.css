@@ -15,7 +15,8 @@
  *=# require font-awesome-4.1.0/
  *= require bootstrap.min
  *= require sb-admin-2
- *= require_tree ./plugins/
+ *= #require_tree plugins/
  *= require font-awesome-4.1.0/css/font-awesome
  *= require chart.js.css
+ *= require_tree .
  */
