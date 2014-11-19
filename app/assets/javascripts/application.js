@@ -17,6 +17,7 @@
 //= require plugins/metisMenu/metisMenu.min
 //= require sb-admin-2
 //= require Chart.js
+//= require utils
 //= require_tree .
 
 

@@ -1,5 +1,5 @@
 module ApplicationHelper
-  def self.make_success_json_resp(data)
+  def make_success_json_resp(data)
     response_data = {}
     response_data['data'] = data
     response_data['status'] = 0

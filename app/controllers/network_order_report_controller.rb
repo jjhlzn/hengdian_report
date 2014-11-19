@@ -1,4 +1,7 @@
+require 'date'
+
 class NetworkOrderReportController < ApplicationController
+  include ApplicationHelper
   def area_compare
     respond_to do |format|
       format.html
@@ -23,7 +26,7 @@ class NetworkOrderReportController < ApplicationController
                    'params' => params}
 
         #返回结果
-        render json: ApplicationHelper.make_success_json_resp(return_data)
+        render json: make_success_json_resp(return_data)
       end
     end
   end
@@ -32,14 +35,16 @@ class NetworkOrderReportController < ApplicationController
     respond_to do |format|
       format.html
       format.json do
-        
+        service = DayReportScript.new
+        date = DateTime.now.prev_month.prev_month.prev_month.prev_month
+        result = service.get_order_stat date, params[:indicator]
+        render json: make_success_json_resp(result)
       end
     end
   end
 
   def test
   end
-
 
 
 end
