@@ -18,5 +18,5 @@
  *= #require_tree plugins/
  *= require font-awesome-4.1.0/css/font-awesome
  *= require chart.js.css
- *= require_tree .
+ *= #require_tree .
  */

@@ -19,9 +19,15 @@ module Hengdian
   ORDER_TYPE_TICKET = OrderType.new('ticket', '门票')
   ORDER_TYPE_HOTEL = OrderType.new('hotel', '酒店')
   ORDER_TYPE_PACKAGE = OrderType.new('package', '套餐')
+
+  class TicketProduction
+    attr_accessor :prod_id, :name
+  end
 end
 
 module TSColumns
   COL_ORDER_PEOPLE = 'DDjNumber'
   COL_ORDER_TOTAL_MONEY = 'DAmount'
+  COL_ORDER_COMEDATE = 'DComeDate'
+  COL_PRO_NAME = 'MyName'
 end

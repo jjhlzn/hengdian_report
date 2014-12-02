@@ -1,0 +1,114 @@
+<%= javascript_include_tag params[:controller] %>
+
+<div style="width:100%">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-md-3">
+          <div class="dropdown">
+            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown">
+              选择年份
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu2">
+              <li role="presentation">
+                <a role="menuitem" tabindex="-1" href="#" onclick="change_dataset('year', '2014', '2014')">2014</a></li>
+              <li role="presentation">
+                <a role="menuitem" tabindex="-1" href="#" onclick="change_dataset('year', '2013', '2013')">2013</a></li>
+              <li role="presentation">
+                <a role="menuitem" tabindex="-1" href="#" onclick="change_dataset('year', '2012', '2012')">2012</a></li>
+            </ul>
+            <span id="lbl_year">2014年</span>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="dropdown">
+            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
+              选择指标指标
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+              <li role="presentation">
+                <a role="menuitem" tabindex="-1" href="#" onclick="change_dataset('indicator', 'people_count', '人数')">人数</a>
+              </li>
+              <li role="presentation">
+                <a role="menuitem" tabindex="-1" href="#" onclick="change_dataset('indicator','total_money', '营收')">营收</a>
+              </li>
+              <li role="presentation">
+                <a role="menuitem" tabindex="-1" href="#" onclick="change_dataset('indicator', 'order_count', '订单数')">订单数</a>
+              </li>
+            </ul>
+            <span id="lbl_indicator">人数</span>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="dropdown">
+            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu3" data-toggle="dropdown">
+              是否实际售票数据
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu3">
+              <li role="presentation">
+                <a role="menuitem" tabindex="-1" href="#" onclick="change_dataset('is_real_sell_info','0', '否')">否</a>
+              </li>
+              <li role="presentation">
+                <a role="menuitem" tabindex="-1" href="#" onclick="change_dataset('is_real_sell_info', '1', '是')">是</a>
+              </li>
+            </ul>
+            <span id="lbl_is_real_sell_info">否</span>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="dropdown">
+            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu4" data-toggle="dropdown">
+              排名前N位
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu4">
+              <li role="presentation">
+                <a role="menuitem" tabindex="-1" href="#" onclick="change_dataset('topn','5', '5')">5</a></li>
+              <li role="presentation">
+                <a role="menuitem" tabindex="-1" href="#" onclick="change_dataset('topn', '10', '10')">10</a></li>
+              <li role="presentation">
+                <a role="menuitem" tabindex="-1" href="#" onclick="change_dataset('topn', '15', '15')">15</a></li>
+              <li role="presentation">
+                <a role="menuitem" tabindex="-1" href="#" onclick="change_dataset('topn', '20', '20')">20</a></li>
+            </ul>
+            <span id="lbl_topn">15</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="col-md-6 labeled-chart-container">
+          <div class="canvas-holder">
+            <canvas id="canvas" height="150" width="300"></canvas>
+          </div>
+        </div>
+        <div class="col-md-6 labeled-chart-container">
+          <div class="canvas-holder">
+            <canvas id="canvas1" height="150" width="300"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="col-md-6">
+          <table id="table_province" class="table">
+          </table>
+        </div>
+        <div class="col-md-6">
+          <table id="table_city" class="table">
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

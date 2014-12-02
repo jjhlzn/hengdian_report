@@ -1,0 +1,2 @@
+module NetworkOrderTodayReportsHelper
+end

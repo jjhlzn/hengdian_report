@@ -19,6 +19,7 @@ group :test do
   gem 'factory_girl_rails'
 end
 
+#gem 'railties'
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.3'

@@ -5,25 +5,25 @@ window.onload = function () {
 };
 
 function send_today_report_req(params) {
-    send_data_request('/network_order_report/today_report.json',
-                      params,
-                      deal_resonse_json);
+    send_data_request('network_order_today_reports.json',
+        params,
+        deal_resonse_json);
     send_data_request('/network_order_report/latest_30days_report.json',
-                      params,
-                      deal_resonse_json2);
+        params,
+        deal_resonse_json2);
 }
 
 function deal_resonse_json(respJSON) {
     if (respJSON.status != 0) {
         alert('服务器返回错误（status = ' + respJSON.status
-              + ", message = " + respJSON.message + ')');
+        + ", message = " + respJSON.message + ')');
         return;
     }
     draw_report( respJSON.data,
-                 {responsive: true,
-                 pointHitDetectionRadius: 1,
-                 datasetFill: false,
-                 pointDot: respJSON.data} );
+        {responsive: true,
+            pointHitDetectionRadius: 1,
+            datasetFill: false,
+            pointDot: respJSON.data} );
 }
 
 function deal_resonse_json2(respJSON) {

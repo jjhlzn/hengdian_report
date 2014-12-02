@@ -1,0 +1,54 @@
+require 'hengdian'
+class Latest30DaysReportScript
+  include Hengdian::Contants
+  include TSColumns
+  #返回包含在years中各年的日期从[from_date, to_date]的订单汇总信息
+  #注意: from_date和to_date必须在同一年,否则报错
+  def get_data(indicator, years, from_date, to_date)
+    raise "from_date必须和to_date在同一年份" unless from_date.year == to_date.year
+    result = []
+    years.each do |year|
+      from_date = DateTime.new(year, from_date.month, from_date.day)
+      to_date = DateTime.new(year, to_date.month, to_date.day)
+      sql = get_sql(indicator, year, from_date, to_date)
+      result_sets = DBUtils.execute_array(sql)
+      Rails.logger.debug { from_date }
+      Rails.logger.debug { from_date.class }
+      NetworkOrderReportHelper.insert_defult_values_if_not_exists(result_sets, COL_ORDER_COMEDATE,
+                                         indicator,
+                                         from_date, to_date)
+      Rails.logger.debug { result_sets.inspect }
+      result << {year: year, data: result_sets.map { |x| x[indicator].to_i }}
+    end
+    return {days: (from_date..to_date).map { |x| x.strftime('%m-%d')},
+            values: result}
+  end
+
+  private
+  def get_sql(indicator, year, from_date, to_date)
+    field = ''
+    case indicator
+      when INDICATOR_ORDER_COUNT then
+        field = 'COUNT(*)'
+      when INDICATOR_PEOPLE_COUNT then
+        field = 'SUM(b.DSjNumber)'
+      when INDICATOR_TOTAL_MONEY then
+        field = 'SUM(b.DSjAmount)'
+    end
+
+    ticket_db_name = DBUtils.get_ticket_database(DateTime.new(year.to_i, 1, 1))
+    ticket_server = DBUtils.ticket_server
+    sql =  """SELECT DComeDate, #{field} as #{indicator} FROM #{ticket_server}.#{ticket_db_name}.dbo.v_tbdTravelOK a inner join
+              #{ticket_server}.#{ticket_db_name}.dbo.v_tbdTravelOkOther b on a.SellID = b.SellID
+              WHERE Flag in (1)
+                    AND EXISTS(SELECT b.DName FROM #{ticket_server}.#{ticket_db_name}.dbo.tbdGroupType b
+                                       WHERE a.DGroupType = b.DName AND a.DGroupTypeAssort = b.sType
+                                             AND DGroupRoomType = '网络用房')
+                    AND DComeDate between '#{from_date.strftime('%F')}' and '#{to_date.strftime('%F')}'
+              GROUP BY DComeDate
+              ORDER BY DComeDate"""
+
+    Rails.logger.debug { sql }
+    return sql
+  end
+end

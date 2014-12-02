@@ -18,7 +18,7 @@
 //= require sb-admin-2
 //= require Chart.js
 //= require utils
-//= require_tree .
+//= #require_tree .
 
 
 

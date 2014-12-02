@@ -1,0 +1,2 @@
+module NetworkOrderAreaComparesHelper
+end
