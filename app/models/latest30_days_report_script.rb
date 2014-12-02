@@ -2,6 +2,8 @@ require 'hengdian'
 class Latest30DaysReportScript
   include Hengdian::Contants
   include TSColumns
+  include DBUtils
+
   #返回包含在years中各年的日期从[from_date, to_date]的订单汇总信息
   #注意: from_date和to_date必须在同一年,否则报错
   def get_data(indicator, years, from_date, to_date)
@@ -11,7 +13,7 @@ class Latest30DaysReportScript
       from_date = DateTime.new(year, from_date.month, from_date.day)
       to_date = DateTime.new(year, to_date.month, to_date.day)
       sql = get_sql(indicator, year, from_date, to_date)
-      result_sets = DBUtils.execute_array(sql)
+      result_sets = execute_array(sql)
       Rails.logger.debug { from_date }
       Rails.logger.debug { from_date.class }
       NetworkOrderReportHelper.insert_defult_values_if_not_exists(result_sets, COL_ORDER_COMEDATE,
@@ -36,8 +38,7 @@ class Latest30DaysReportScript
         field = 'SUM(b.DSjAmount)'
     end
 
-    ticket_db_name = DBUtils.get_ticket_database(DateTime.new(year.to_i, 1, 1))
-    ticket_server = DBUtils.ticket_server
+    ticket_db_name = get_ticket_database(DateTime.new(year.to_i, 1, 1))
     sql =  """SELECT DComeDate, #{field} as #{indicator} FROM #{ticket_server}.#{ticket_db_name}.dbo.v_tbdTravelOK a inner join
               #{ticket_server}.#{ticket_db_name}.dbo.v_tbdTravelOkOther b on a.SellID = b.SellID
               WHERE Flag in (1)

@@ -2,9 +2,11 @@ require 'hengdian'
 
 class TodayTicketReportScript
   include TSColumns
+  include DBUtils
+
   def get_topn_production(date, indicator, topn = 5)
     sql = get_topn_production_sql(date, indicator)
-    result_sets = DBUtils.execute_array sql
+    result_sets = execute_array sql
     names = result_sets.map { |x| x[COL_PRO_NAME] }
     values = result_sets.map { |x| x[indicator].to_i }
     return {names: names, values: values}
@@ -12,8 +14,7 @@ class TodayTicketReportScript
 
   private
   def get_topn_production_sql(date, indicator)
-    ticket_db_name = DBUtils.get_ticket_database(DateTime.new(date.year, 1, 1))
-    ticket_server = DBUtils.ticket_server
+    ticket_db_name = get_ticket_database(DateTime.new(date.year, 1, 1))
     sql = """SELECT CurID,
                     (SELECT b.MyName FROM  #{ticket_server}.#{ticket_db_name}.dbo.tbdProduction b where c.CurID = b.CurID) as MyName,
                      SUM(DNumber) as people_count,

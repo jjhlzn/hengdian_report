@@ -5,6 +5,7 @@ class DayReportScript
   include TSColumns
   include Hengdian::Contants
   include Hengdian
+  include DBUtils
 
   def initialize
   end
@@ -24,7 +25,7 @@ class DayReportScript
 
   private
   def get_order_stat0(date, order_type, indicator)
-    orders = DBUtils.execute_array(get_sql(date, order_type))
+    orders = execute_array(get_sql(date, order_type))
     case indicator
       when INDICATOR_ORDER_COUNT then
         orders.count
@@ -53,8 +54,7 @@ class DayReportScript
     end
   end
   def get_all_order_sql(date)
-    ticket_db_name = DBUtils.get_ticket_database(date)
-    ticket_server = DBUtils.ticket_server
+    ticket_db_name = get_ticket_database(date)
     sql =  """SELECT * FROM #{ticket_server}.#{ticket_db_name}.dbo.v_tbdTravelOk a
               WHERE DDate = '#{date.strftime('%F')}'
                     AND a.Flag in (0, 1)
@@ -66,8 +66,7 @@ class DayReportScript
   end
 
   def get_ticket_order_sql(date)
-    ticket_db_name = DBUtils.get_ticket_database(date)
-    ticket_server = DBUtils.ticket_server
+    ticket_db_name = get_ticket_database(date)
     sql =  """SELECT * FROM #{ticket_server}.#{ticket_db_name}.dbo.v_tbdTravelOk a
               WHERE DDate = '#{date.strftime('%F')}'
               AND a.Flag in (0, 1)
@@ -81,8 +80,7 @@ class DayReportScript
   end
 
   def get_hotel_order_sql(date)
-    ticket_db_name = DBUtils.get_ticket_database(date)
-    ticket_server = DBUtils.ticket_server
+    ticket_db_name = get_ticket_database(date)
     sql =  """SELECT * FROM #{ticket_server}.#{ticket_db_name}.dbo.v_tbdTravelOk a
               WHERE DDate = '#{date.strftime('%F')}'
               AND a.Flag in (0, 1)
@@ -98,8 +96,7 @@ class DayReportScript
   end
 
   def get_package_order_sql(date)
-    ticket_db_name = DBUtils.get_ticket_database(date)
-    ticket_server = DBUtils.ticket_server
+    ticket_db_name = get_ticket_database(date)
     sql =  """SELECT * FROM #{ticket_server}.#{ticket_db_name}.dbo.v_tbdTravelOk a
               WHERE DDate = '#{date.strftime('%F')}'
               AND a.Flag in (0, 1)

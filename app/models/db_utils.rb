@@ -1,9 +1,10 @@
 require 'tiny_tds'
 
-class DBUtils
+module DBUtils
   @@ticket_server = ''
 
-  def self.execute_array(sql)
+  private
+  def execute_array(sql)
     client = TinyTds::Client.new(:username => 'sa',
                                  :password => '123456',
                                  :host => '10.1.36.168',
@@ -17,11 +18,15 @@ class DBUtils
     return array
   end
 
-  def self.ticket_server
+  def ticket_server
     @@ticket_server
   end
 
-  def self.get_ticket_database(date)
+  def get_ticket_database(date)
     'iccard' + (date.year % 100).to_s
+  end
+
+  def ticket_db_prefix(date)
+    "#{ticket_server}.#{get_ticket_database(date)}.dbo"
   end
 end
