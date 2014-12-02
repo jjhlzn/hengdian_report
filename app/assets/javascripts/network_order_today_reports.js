@@ -1,8 +1,8 @@
 var params = {};
-window.onload = function () {
+$(document).ready( function() {
     params['indicator'] = 'people_count'
     send_today_report_req(params)
-};
+});
 
 function send_today_report_req(params) {
     send_data_request('network_order_today_reports.json',

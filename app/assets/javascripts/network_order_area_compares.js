@@ -3,13 +3,13 @@ var datasets_src;
 var datasets1 = {}
 var datasets1_src;
 var params = {};
-window.onload = function () {
+$(document).ready( function() {
     params['year'] = '2014'
     params['indicator'] = 'people_count'
     params['is_real_sell_info'] = '0'
     params['topn'] = '15'
     send_data_request(params)
-};
+} );
 
 function send_data_request(params) {
     $.ajax({
