@@ -11,7 +11,7 @@ class NetworkOrderTodayTicketReportsController < ApplicationController
       format.json do
         service = TodayTicketReportScript.new
         date = DateTime.new(2014, 7, 1)
-        result = service.get_topn_production(date, INDICATOR_PEOPLE_COUNT)
+        result = service.get_topn_production(date, params[:indicator])
         render json: make_success_json_resp(result)
       end
     end

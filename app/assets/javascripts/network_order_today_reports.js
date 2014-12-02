@@ -96,7 +96,7 @@ function convert_to_chartjs_line(data) {
     };
 }
 
-function draw_pie(canvas_id, datasets, graph_name, table_id, options) {
+function draw_pie(canvas_id, datasets, graph_name, options) {
     var ctx = document.getElementById(canvas_id).getContext("2d");
     window[graph_name] = new Chart(ctx).Pie(datasets, options);
 

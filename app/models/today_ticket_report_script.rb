@@ -15,7 +15,7 @@ class TodayTicketReportScript
     ticket_db_name = DBUtils.get_ticket_database(DateTime.new(date.year, 1, 1))
     ticket_server = DBUtils.ticket_server
     sql = """SELECT CurID,
-                    (SELECT b.MyName FROM iccard14.dbo.tbdProduction b where c.CurID = b.CurID) as MyName,
+                    (SELECT b.MyName FROM  #{ticket_server}.#{ticket_db_name}.dbo.tbdProduction b where c.CurID = b.CurID) as MyName,
                      SUM(DNumber) as people_count,
                      COUNT(distinct SellID) as order_count,
                      SUM(DAmount) as total_money
