@@ -9,3 +9,4 @@ Rails.application.config.assets.version = '1.0'
 Rails.application.config.assets.precompile += %w( network_order_area_compares.js )
 Rails.application.config.assets.precompile += %w( network_order_today_reports.js )
 Rails.application.config.assets.precompile += %w( network_order_today_ticket_reports.js )
+Rails.application.config.assets.precompile += %w( network_order_yearly_agent_reports.js )

@@ -1,68 +1,4 @@
-var datasets = {}
-var datasets_src;
-var datasets1 = {}
-var datasets1_src;
-var params = {};
-$(document).ready( function() {
-    params['year'] = '2014'
-    params['indicator'] = 'people_count'
-    params['is_real_sell_info'] = '0'
-    params['topn'] = '15'
-    send_data_request(params)
-} );
-
-function send_data_request(params) {
-    $.ajax({
-        type: "GET",
-        url: "network_order_area_compares.json",
-        data: {year: params.year,
-            indicator: params.indicator,
-            is_real_sell_info: params.is_real_sell_info,
-            topn: params.topn},
-        dataType: "json",
-        success: deal_resonse_json
-    });
-}
-
-function deal_resonse_json(respJSON) {
-    if (respJSON.status != 0) {
-        alert('服务器返回错误（status = ' + respJSON.status + ", message = " + respJSON.message + ')');
-        return;
-    }
-    params = respJSON.data.params;
-    datasets = respJSON.data.datasets;
-    datasets_src = respJSON.data.datasets_src;
-    datasets1 = respJSON.data.datasets1;
-    datasets1_src = respJSON.data.datasets1_src;
-
-    draw_lines( {responsive: true,
-        pointHitDetectionRadius: 1,
-        datasetFill: false,
-        pointDot: respJSON.data.pointDot} );
-}
-
-function change_dataset(key, value, desc) {
-    window.pie.destroy();
-    window.pie1.destroy();
-    document.getElementById('table_province').innerHTML = "";
-    document.getElementById('table_city').innerHTML = "";
-    params[key] = value;
-    $('#lbl_' + key).html(desc);
-    $("ul.pie-legend").remove();
-    send_data_request(params);
-}
-
-function draw_graph(canvas_id, datasets, datasets_src, graph_name, table_id, options) {
-    var ctx = document.getElementById(canvas_id).getContext("2d");
-    window[graph_name] = new Chart(ctx).Pie(datasets, options);
-
-    var legendHolder = $("<div id='" + canvas_id + "_legend'>")[0];
-    legendHolder.innerHTML = window[graph_name].generateLegend();
-    // Include a html legend template after the module doughnut itself
-
-    document.getElementById(canvas_id).parentNode.parentNode
-        .appendChild(legendHolder.firstChild);
-
+function pie_draw_table(datasets_src, table_id) {
     var table1 = document.getElementById(table_id);
     var topn = parseInt(params.topn);
     for (var i = 0; i < datasets_src.length; i++) {
@@ -87,9 +23,37 @@ function draw_graph(canvas_id, datasets, datasets_src, graph_name, table_id, opt
     }
 }
 
-function draw_lines(options) {
-    console.log("draw_lines");
-    draw_graph('canvas', datasets, datasets_src, 'pie', 'table_province', options);
-    draw_graph('canvas1', datasets1, datasets1_src, 'pie1', 'table_city', options);
+function response_deal_fuction(respJSON) {
+    var datasets_src = respJSON.data.datasets_src;
+    var datasets1 = respJSON.data.datasets1;
+    var datasets1_src = respJSON.data.datasets1_src;
+
+    var options = {  responsive: true,
+        pointHitDetectionRadius: 1,
+        datasetFill: false,
+        pointDot: respJSON.data.pointDot };
+    pie_draw_table(datasets_src, 'table_province');
+    draw_pie('canvas1', datasets1, 'pie1', options);
+    pie_draw_table(datasets1_src, 'table_city');
 }
+
+function change_dataset(key, value, desc) {
+    window.pie.destroy();
+    window.pie1.destroy();
+    document.getElementById('table_province').innerHTML = "";
+    document.getElementById('table_city').innerHTML = "";
+    params[key] = value;
+    $('#lbl_' + key).html(desc);
+    $("ul.pie-legend").remove();
+    send_pie_data_request(params);
+}
+
+$(document).ready( function() {
+    params['year'] = '2014'
+    params['indicator'] = 'people_count'
+    params['is_real_sell_info'] = '0'
+    params['topn'] = '15'
+    send_pie_data_request('canvas', 'pie', "/network_order_area_compares.json", response_deal_fuction)
+} );
+
 

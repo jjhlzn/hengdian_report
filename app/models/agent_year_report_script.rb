@@ -9,12 +9,12 @@ class AgentYearReportScript
 
   def get_data(year, indicator=INDICATOR_PEOPLE_COUNT, topn = 10)
     result_sets = execute_array(get_sql(DateTime.new(year, 1, 1), indicator))
-
-    return deal_result_set(result_sets, 'DName', topn + 1, indicator)
+    return deal_result_set(result_sets, 'AgentName', topn + 1, indicator)
   end
 
   private
   def get_sql(date, indicator)
+    Rails.logger.debug { "date = #{date}" }
     sql = """SELECT DTravelNo, (SELECT c.DName FROM #{ticket_db_prefix(date)}.tbdTravelAgencyInfo c WHERE c.DTravelNo = a.DTravelNo) as AgentName,
                     SUM(DDjNumber) AS people_count, SUM(DAmount) AS total_money, COUNT(*) AS order_count
             FROM #{ticket_db_prefix(date)}.v_tbdTravelOk a
