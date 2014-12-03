@@ -1,10 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>HengdianReport</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <style>
+      a:active active   /* 被选择的链接 */
+  </style>
+  <title>横店影视城报表系统</title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag params[:controller] %>
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
@@ -93,7 +99,9 @@
             </ul>
             <!-- /.nav-second-level -->
           </li>
-
+          <li>
+            <a href="/network_order_area_compares"><i class="fa fa-edit fa-fw"></i> 区域分析</a>
+          </li>
           <li>
             <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> 日报表<span class="fa arrow"></span></a>
             <ul class="nav nav-second-level">
@@ -138,7 +146,7 @@
             <!-- /.nav-second-level -->
           </li>
 
-          <li>
+          <li class="active">
             <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> 年报表<span class="fa arrow"></span></a>
             <ul class="nav nav-second-level">
               <li>
@@ -154,7 +162,7 @@
                 <a href="#">套餐</a>
               </li>
               <li>
-                <a href="/network_order_yearly_agent_reports">代理商分析</a>
+                <a href="/network_order_yearly_agent_reports" class="active">代理商分析</a>
               </li>
               <li>
                 <a href="/network_order_area_compares">区域分析</a>
@@ -175,6 +183,9 @@
   <!-- /#page-wrapper -->
 
 </div>
+<script src="http://code.jquery.com/jquery-1.9.0.js"></script>
+<%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+<%= javascript_include_tag params[:controller] %>
 
 
 </body>

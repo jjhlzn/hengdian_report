@@ -11,12 +11,12 @@
 // about supported directives.
 //
 //= require jquery
-//= require jquery_ujs
-//= require turbolinks
-//= require bootstrap.js
+//= #require jquery_ujs
+//= #require turbolinks
+//= require bootstrap/bootstrap.js
 //= require plugins/metisMenu/metisMenu.min
 //= require sb-admin-2
-//= require Chart.js
+//= require chartjs/Chart.js
 //= require utils
 //= require pie_style_report
 //= #require_tree .
