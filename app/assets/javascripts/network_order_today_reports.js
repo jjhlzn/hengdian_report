@@ -1,29 +1,17 @@
 var params = {};
+
+var product_diff_pie_req = null;
 $(document).ready( function() {
-    params['indicator'] = 'people_count'
-    send_today_report_req(params)
+    product_diff_pie_req = new PieRequest('canvas', 'pie', '/network_order_today_reports.json')
+    product_diff_pie_req.params['indicator'] = 'people_count';
+    product_diff_pie_req.send();
+    send_today_report_req(product_diff_pie_req.params)
 });
 
 function send_today_report_req(params) {
-    send_data_request('network_order_today_reports.json',
-        params,
-        deal_resonse_json);
     send_data_request('/network_order_report/latest_30days_report.json',
         params,
         deal_resonse_json2);
-}
-
-function deal_resonse_json(respJSON) {
-    if (respJSON.status != 0) {
-        alert('服务器返回错误（status = ' + respJSON.status
-        + ", message = " + respJSON.message + ')');
-        return;
-    }
-    draw_report( respJSON.data,
-        {responsive: true,
-            pointHitDetectionRadius: 1,
-            datasetFill: false,
-            pointDot: respJSON.data} );
 }
 
 function deal_resonse_json2(respJSON) {
@@ -56,21 +44,6 @@ function draw_report2(respData, options) {
     draw_line('canvas2', data, 'line',  options);
 }
 
-//将数据转化为chartjs识别的格式
-function convert_to_chartjs_pie(data) {
-    var result = [];
-    for(var i = 0; i < data.length; i++) {
-        var item = data[i];
-        result.push({
-            value: item.value,
-            color: COLORS[i],
-            highlight: COLORS[i],
-            label: item.name
-        });
-    }
-    return result;
-}
-
 function convert_to_chartjs_line(data) {
     var labels = data['days'];
     //alert(labels);
@@ -94,18 +67,6 @@ function convert_to_chartjs_line(data) {
         labels: labels,
         datasets: result
     };
-}
-
-function draw_pie(canvas_id, datasets, graph_name, options) {
-    var ctx = document.getElementById(canvas_id).getContext("2d");
-    window[graph_name] = new Chart(ctx).Pie(datasets, options);
-
-    var legendHolder = $("<div id='" + canvas_id + "_legend'>")[0];
-    legendHolder.innerHTML = window[graph_name].generateLegend();
-    // Include a html legend template after the module doughnut itself
-
-    document.getElementById(canvas_id).parentNode.parentNode
-        .appendChild(legendHolder.firstChild);
 }
 
 function draw_line(canvas_id, data, graph_name,  options) {

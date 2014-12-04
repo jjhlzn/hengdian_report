@@ -6,6 +6,7 @@ class DayReportScript
   include Hengdian::Contants
   include Hengdian
   include DBUtils
+  include PieStyle
 
   def initialize
   end
@@ -13,14 +14,15 @@ class DayReportScript
   #获取指定日期的订单分析,这个只关心预订的情况,不关心订单的实际使用情况
   def get_order_stat(date=DateTime.now, indicator = INDICATOR_ORDER_COUNT)
     result = []
-    [ORDER_TYPE_TICKET, ORDER_TYPE_HOTEL, ORDER_TYPE_PACKAGE].each_with_index do |x|
+    [ORDER_TYPE_TICKET, ORDER_TYPE_HOTEL, ORDER_TYPE_PACKAGE].each_with_index do |x, index|
        result << {
                      id:   x.id,
-                     name: x.name,
+                     label: x.name,
                      value: get_order_stat0(date, x, indicator).to_i,
+                     color: @@colors[index]
                  }
-     end
-    return result
+    end
+    return {datasets: result}
   end
 
   private

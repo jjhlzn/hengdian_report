@@ -9,7 +9,6 @@ function change_dataset(key, value, desc) {
 }
 
 $(document).ready( function() {
-
     agent_report_req = new PieRequest('canvas', 'pie', "network_order_yearly_agent_reports.json");
     agent_report_req.params['indicator'] = 'people_count'
     agent_report_req.send();
