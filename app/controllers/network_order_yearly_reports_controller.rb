@@ -1,0 +1,2 @@
+class NetworkOrderYearlyReportsController < ApplicationController
+end

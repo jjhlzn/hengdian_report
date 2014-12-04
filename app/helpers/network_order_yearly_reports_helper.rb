@@ -1,0 +1,2 @@
+module NetworkOrderYearlyReportsHelper
+end
