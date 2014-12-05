@@ -7,7 +7,9 @@ module DBUtils
   def execute_array(sql)
     client = TinyTds::Client.new(:username => 'sa',
                                  :password => '123456',
-                                 :host => '10.1.36.168',
+                                 :host => '192.168.0.105
+
+',
                                  :timeout => 60)
     result = client.execute(sql)
     array = []
