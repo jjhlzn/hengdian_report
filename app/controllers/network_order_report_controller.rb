@@ -11,8 +11,8 @@ class NetworkOrderReportController < ApplicationController
       format.json do
         service = Latest30DaysReportScript.new
         years = [2014, 2013]
-        from_date = DateTime.new(2014, 7, 1)
-        to_date = DateTime.new(2014, 7, 30)
+        from_date = DateTime.new(2014, 11, 1)
+        to_date = DateTime.new(2014, 11, 30)
         result = service.get_data(INDICATOR_ORDER_COUNT, years, from_date, to_date)
         render json: make_success_json_resp(result)
       end

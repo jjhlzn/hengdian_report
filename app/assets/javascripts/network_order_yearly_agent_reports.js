@@ -5,13 +5,13 @@ function change_dataset(key, value, desc) {
     params[key] = value;
     $('#lbl_' + key).html(desc);
     $("ul.pie-legend").remove();
-    agent_report_req.send();
+    agent_report_req.send_request();
 }
 
 $(document).ready( function() {
-    agent_report_req = new PieRequest('canvas', 'pie', "network_order_yearly_agent_reports.json");
+    agent_report_req = new PieReportChart('canvas', 'pie', "network_order_yearly_agent_reports.json");
     agent_report_req.params['indicator'] = 'people_count'
-    agent_report_req.send();
+    agent_report_req.send_request();
 } );
 
 

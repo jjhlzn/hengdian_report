@@ -2192,7 +2192,7 @@
 	 * parameters can have multiple forms, and backwards compatibility.
 	 *
 	 * @param {object} oSettings dataTables settings object
-	 * @param {array} data Data to send to the server, required by
+	 * @param {array} data Data to send_request to the server, required by
 	 *     DataTables - may be augmented by developer callbacks
 	 * @param {function} fn Callback function to run when data is obtained
 	 */
@@ -9187,7 +9187,7 @@
 		 * The function is given four parameters and no return is required. The
 		 * parameters are:
 		 *
-		 * 1. _object_ - Data to send to the server
+		 * 1. _object_ - Data to send_request to the server
 		 * 2. _function_ - Callback function that must be executed when the required
 		 *    data has been obtained. That data should be passed into the callback
 		 *    as the only parameter
@@ -10036,7 +10036,7 @@
 		 *  @type function
 		 *  @member
 		 *  @param {string} source HTTP source to obtain the data from (`ajax`)
-		 *  @param {array} data A key/value pair object containing the data to send
+		 *  @param {array} data A key/value pair object containing the data to send_request
 		 *    to the server
 		 *  @param {function} callback to be called on completion of the data get
 		 *    process that will draw the data on the page.
@@ -10055,9 +10055,9 @@
 		 * __Deprecated__ The functionality provided by this parameter has now been
 		 * superseded by that provided through `ajax`, which should be used instead.
 		 *
-		 *  It is often useful to send extra data to the server when making an Ajax
+		 *  It is often useful to send_request extra data to the server when making an Ajax
 		 * request - for example custom filtering information, and this callback
-		 * function makes it trivial to send extra information to the server. The
+		 * function makes it trivial to send_request extra information to the server. The
 		 * passed in parameter is the data set that has been constructed by
 		 * DataTables, and you can add to this or modify it as you require.
 		 *  @type function

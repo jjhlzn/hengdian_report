@@ -8,7 +8,7 @@ function change_dataset(key, value, desc) {
     pie_request.params[key] = value;
     $('#lbl_' + key).html(desc);
     $("ul.pie-legend").remove();
-    pie_request.send();
+    pie_request.send_request();
 }
 
 $(document).ready(function() {
@@ -55,10 +55,10 @@ $(document).ready(function() {
     params['indicator'] = 'people_count'
     params['is_real_sell_info'] = '0'
     params['topn'] = '15'
-    pie_request = new PieRequest('canvas', 'pie', "/network_order_area_compares.json", response_deal_fuction)
+    pie_request = new PieReportChart('canvas', 'pie', "/network_order_area_compares.json", response_deal_fuction)
     //send_pie_data_request('canvas', 'pie', "/network_order_area_compares.json", response_deal_fuction)
     pie_request.params = params;
-    pie_request.send();
+    pie_request.send_request();
 } );
 
 

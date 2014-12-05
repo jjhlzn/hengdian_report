@@ -2352,7 +2352,7 @@
                                    function (s) { return s["clickable"] != false; });
         }
 
-        // trigger click or hover event (they send the same parameters
+        // trigger click or hover event (they send_request the same parameters
         // so we share their code)
         function triggerClickHoverEvent(eventname, event, seriesFilter) {
             var offset = eventHolder.offset(),
