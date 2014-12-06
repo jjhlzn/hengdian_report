@@ -1,15 +1,5 @@
-var agent_report_req = null;
-
-function change_dataset(key, value, desc) {
-    window[agent_report_req.graph_name].destroy();
-    params[key] = value;
-    $('#lbl_' + key).html(desc);
-    $("ul.pie-legend").remove();
-    agent_report_req.send_request();
-}
-
 $(document).ready( function() {
-    agent_report_req = new PieReportChart('canvas', 'pie', "network_order_yearly_agent_reports.json");
+    var agent_report_req = new PieReportChart('agent_pie', '代理商排名(门票, 酒店, 套餐)', 250, 400, "network_order_yearly_agent_reports.json");
     agent_report_req.params['indicator'] = 'people_count'
     agent_report_req.send_request();
 } );

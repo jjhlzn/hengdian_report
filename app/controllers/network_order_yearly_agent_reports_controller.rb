@@ -9,7 +9,7 @@ class NetworkOrderYearlyAgentReportsController < ApplicationController
       format.html
       format.json do
         service = AgentYearReportScript.new
-        render json: make_success_json_resp({'datasets' => service.get_data(2014)[0]})
+        render json: make_success_json_resp({'datasets' => service.get_data(2014, params[:indicator])[0]})
       end
     end
 

@@ -3,13 +3,15 @@ require 'hengdian'
 class TodayTicketReportScript
   include TSColumns
   include DBUtils
+  include BarStyle
 
   def get_topn_production(date, indicator, topn = 5)
     sql = get_topn_production_sql(date, indicator)
     result_sets = execute_array sql
     names = result_sets.map { |x| x[COL_PRO_NAME] }
     values = result_sets.map { |x| x[indicator].to_i }
-    return {names: names, values: values}
+
+    return {labels: names, datasets: convert_to_report_format([{label: '景点', data: values}])}
   end
 
   private

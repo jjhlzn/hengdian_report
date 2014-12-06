@@ -35,9 +35,9 @@ ReportChart.prototype = {
         window[this.graph_name] = new Chart(ctx)[chart_func_name](datasets, options);
 
         // Include a html legend template after the module doughnut itself
-        //var legendHolder = $("<div id='" + this.id + "_legend'>")[0];
-        //legendHolder.innerHTML = window[this.graph_name].generateLegend();
-        //document.getElementById(this.canvas_id).parentNode.parentNode.appendChild(legendHolder.firstChild);
+        var legendHolder = $("<div id='" + this.id + "_legend'>")[0];
+        legendHolder.innerHTML = window[this.graph_name].generateLegend();
+        document.getElementById(this.canvas_id).parentNode.parentNode.appendChild(legendHolder);
         console.log('after call draw_pie()')
     },
 
@@ -88,11 +88,9 @@ ReportChart.prototype = {
     },
 
     update_report_chart: function (key, value, desc) {
-        //alert(this.id);
-        //alert(this.params);
         window[this.graph_name].destroy();
         this.params[key] = value;
-        $("#" + this.id + "_menu_item_desc").html(desc);
+        $("#" + this.id + "_menu_item_desc").html('&nbsp;'+desc);
         $("#" + this.id + "_legend").remove();
         this.send_request();
     }
