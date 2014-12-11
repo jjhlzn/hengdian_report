@@ -21,6 +21,7 @@
 //= require base_report
 //= require pie_style_report
 //= require line_style_report
+//= require bar_style_report
 //= #require_tree .
 
 

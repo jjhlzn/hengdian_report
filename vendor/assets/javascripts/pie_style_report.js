@@ -14,7 +14,8 @@ function PieReportChart(id, name, height, width, url, other_response_deal_functi
         this.draw_report('Pie', respJSON.data.datasets, options);
     };
 
-    this.initialize(id, name, height, width, url, other_response_deal_function);
+    //this.initialize(id, name, height, width, url, other_response_deal_function);
+    this.initialize.apply(this, arguments);
 }
 
 

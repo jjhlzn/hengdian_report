@@ -11,7 +11,8 @@ var LineReportChart = function (id, name, height, width, url, other_response_dea
                         });
     };
 
-    this.initialize(id, name, height, width, url, other_response_deal_function);
+    //this.initialize(id, name, height, width, url, other_response_deal_function);
+    this.initialize.apply(this, arguments);
 }
 
 LineReportChart.inherits(ReportChart)

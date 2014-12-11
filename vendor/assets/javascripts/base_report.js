@@ -18,7 +18,7 @@ ReportChart.prototype = {
                     alert('服务器返回错误（status = ' + respJSON.status + ", message = " + respJSON.message + ')');
                     return;
                 }
-                console.log(this.default_response_deal_function);
+                //console.log(that.default_response_deal_function);
                 that.default_response_deal_function(respJSON, that.canvas_id, that.graph_name);
                 if (that.other_response_deal_function != undefined)
                     that.other_response_deal_function(respJSON);

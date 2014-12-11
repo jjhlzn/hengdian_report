@@ -3,11 +3,12 @@
  */
 var BarReportChart = function (id, name, height, width, url, other_response_deal_function) {
     this.default_response_deal_function = function (respJSON, canvas_id, graph_name) {
-        this.draw_report('bar', respJSON.data,
+        this.draw_report('Bar', respJSON.data,
             {responsive: true});
     };
 
-    this.initialize(id, name, height, width, url, other_response_deal_function);
+    //this.initialize(id, name, height, width, url, other_response_deal_function);
+    this.initialize.apply(this, arguments);
 }
 
 BarReportChart.inherits(ReportChart)
