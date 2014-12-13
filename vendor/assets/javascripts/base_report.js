@@ -42,40 +42,107 @@ ReportChart.prototype = {
     },
 
 
-    initialize: function(id, name, height, width, url, other_response_deal_function) {
-        var graph_name = id + "_graph";
+    //initialize: function(id, name, height, width, url, other_response_deal_function) {
+    initialize: function(spec) {
+        var graph_name = spec.id + "_graph";
         this.graph_name = graph_name;
-        this.url = url;
-        var canvas_id = id+"_canvas";
-        this.id = id;
+        this.url = spec.url;
+        var canvas_id = spec.id+"_canvas";
+        this.id = spec.id;
         this.canvas_id = canvas_id;
-        this.other_response_deal_function  = other_response_deal_function;
+        this.other_response_deal_function  = spec.other_response_deal_function;
+        var height = spec.height || 200;
+        var width = spec.width || 400;
+        this.height = height;
+        this.width = width;
+        spec.name = spec.name || '';
+        var menus = spec.menus || [{name: 'indicator'}];
 
+        var menu_buttons = this.create_menu_buttons(menus);
+        var div_pull_right = $("<div class='pull-right'>");
+        var i;
+        if (menu_buttons.length > 0){
+            for (i = 0; i < menu_buttons.length; i++)
+                div_pull_right.append(menu_buttons[i]);
+        }
 
         $("<div class='panel-heading'>")
             .append($("<i class='fa fa-bar-chart-o fa-fw>'>"))
-            .append(' '+name)
-            .append($("<div class='pull-right'>")
-                        .append(this.create_indicator_menu_button())).appendTo('#'+id);
+            .append(' '+spec.name)
+            .append(div_pull_right).appendTo('#'+spec.id);
         $("<div class='panel-body'>")
             .append($("<div class='labeled-chart-container'>")
                 .append($("<div class='canvas-holder'>")
-                            .append("<canvas id='"+canvas_id+"' height='"+height+"' width='"+width+"'>"))).appendTo('#'+id);
+                            .append("<canvas id='"+canvas_id+"' height='"+height+"' width='"+width+"'>"))).appendTo('#'+spec.id);
     },
 
+    create_menu_buttons: function(param_menus){
+        var create_year_menu_button = function(name, desc, items) {
+            name = name || 'year';
+            desc = desc || '选择年份';
+            items = items || [{value: '2014', desc: '2013'},
+                {value: '2013', desc: '2013'}];
+            this.create_menu_button('year', '选择年份', items);
+        };
 
-    create_indicator_menu_button: function() {
+        var create_indicator_menu_button = function() {
+
+             items = [{value: 'people_count', desc: '人数'},
+                {value: 'total_money', desc: '营收'},
+                {value: 'order_count', desc: '订单数'}];
+            return this.create_menu_button('indicator', '选择指标', items);
+        };
+
+        var create_topn_menu_button = function() {
+            var items = [{value: '5', desc: '5'},
+                {value: '10', desc: '10'},
+                {value: '15', desc: '15'},
+                {value: '20', desc: '20'}];
+            this.create_menu_button('topn', '选择前N位', items);
+        };
+
+        var create_yesorno_menu_button = function() {
+
+        }
+
+        var menu_mappings = [{name: 'indicator', func: create_indicator_menu_button},
+            {name: 'year', func: create_year_menu_button},
+            {name: 'topn', func: create_topn_menu_button}];
+
+        var get_menu_func = function(name) {
+            var i;
+            for (i = 0; i < menu_mappings.length; i++)
+                if (name === menu_mappings[i]['name'])
+                    return menu_mappings[i]['func'];
+        }
+
+        var menu_buttons = [];
+        var i;
+        for (i = 0; i < param_menus.length; i++) {
+            var func;
+            if (func = get_menu_func(param_menus[i]['name']))
+                menu_buttons.push(func.apply(this));
+        }
+
+        return menu_buttons;
+    },
+
+    create_menu_button: function(param_name, desc, items) {
+        this.params[param_name] = items[0]['value'];
+        var menu_id  = this.id + '_' + param_name + '_dropdownmenu';
+        var dropdown_menu =  $("<ul class='dropdown-menu' role='menu' aria-labelledby='" + menu_id + "'>");
+        var i;
+        for (i = 0; i < items.length; i++)
+            dropdown_menu.append(this.create_menu_item(param_name, items[i]['value'], items[i]['desc']));
         return $("<div class='btn-group'>")
             .append($("<button type='button' class='btn btn-default btn-xs dropdown-toggle'"
-            + " id='" + this.id + "_dropdownMenu' data-toggle='dropdown'>")
-                .append("选择指标")
+            + " id='" + menu_id + "' data-toggle='dropdown'>")
+                .append(desc)
                 .append($("<span class='caret'>")))
-            .append($("<ul class='dropdown-menu' role='menu' aria-labelledby='" + this.id + "_dropdownMenu'>")
-                .append(this.create_menu_item('indicator', 'people_count', '人数'))
-                .append(this.create_menu_item('indicator', 'total_money', '营收'))
-                .append(this.create_menu_item('indicator', 'order_count', '订单数')))
+            .append(dropdown_menu)
             .append($("<span id='"+ this.id + "_menu_item_desc'>").append("&nbsp;人数"));
     },
+
 
     create_menu_item: function(indicator_name, indicator_value, desc) {
         var menu_item = $("<a role='menuitem' tabindex='-1' href='#'>" + desc + "</a>");
