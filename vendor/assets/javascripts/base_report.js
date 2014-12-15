@@ -98,8 +98,8 @@ ReportChart.prototype = {
         var create_indicator_menu_button = function(name, desc, items) {
             name = name || 'indicator'
             desc = desc || '选择指标'
-            items = items || [{value: 'people_count', desc: '人数'},
-                      {value: 'total_money', desc: '营收'},
+            items = items || [{value: 'total_money', desc: '营收'},
+                        {value: 'people_count', desc: '人数'},
                       {value: 'order_count', desc: '订单数'}];
             return this.create_menu_button(name, desc, items);
         };

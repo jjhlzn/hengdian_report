@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  root 'network_order_area_compares#index'
   get 'network_order_report/latest_30days_report'
 
   resources :network_order_area_compares
