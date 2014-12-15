@@ -18,7 +18,6 @@ ReportChart.prototype = {
                     alert('服务器返回错误（status = ' + respJSON.status + ", message = " + respJSON.message + ')');
                     return;
                 }
-                //console.log(that.default_response_deal_function);
                 that.default_response_deal_function(respJSON, that.canvas_id, that.graph_name);
                 if (that.other_response_deal_function != undefined)
                     that.other_response_deal_function(respJSON);
@@ -44,6 +43,7 @@ ReportChart.prototype = {
 
     //initialize: function(id, name, height, width, url, other_response_deal_function) {
     initialize: function(spec) {
+        this.params = spec.other_params || {};
         var graph_name = spec.id + "_graph";
         this.graph_name = graph_name;
         this.url = spec.url;
@@ -56,14 +56,24 @@ ReportChart.prototype = {
         this.height = height;
         this.width = width;
         spec.name = spec.name || '';
-        var menus = spec.menus || [{name: 'indicator'}];
+        var menus = spec.menus || [{type: 'indicator'}];
+
+        var update_report_chart = function (key, value, desc) {
+            window[this.graph_name].destroy();
+            this.params[key] = value;
+            $("#" + this.id + '_' + key + "_menu_item_desc").html('&nbsp;'+desc);
+            $("#" + this.id + "_legend").remove();
+            this.send_request();
+        }
+        this.update_report_chart = spec.update_report_chart || update_report_chart;
 
         var menu_buttons = this.create_menu_buttons(menus);
         var div_pull_right = $("<div class='pull-right'>");
         var i;
         if (menu_buttons.length > 0){
             for (i = 0; i < menu_buttons.length; i++)
-                div_pull_right.append(menu_buttons[i]);
+                div_pull_right.append(menu_buttons[i]).append('&nbsp;&nbsp;&nbsp;');
+                ;
         }
 
         $("<div class='panel-heading'>")
@@ -80,39 +90,48 @@ ReportChart.prototype = {
         var create_year_menu_button = function(name, desc, items) {
             name = name || 'year';
             desc = desc || '选择年份';
-            items = items || [{value: '2014', desc: '2013'},
-                {value: '2013', desc: '2013'}];
-            this.create_menu_button('year', '选择年份', items);
+            items = items || [{value: '2014', desc: '2014'},
+                              {value: '2013', desc: '2013'}];
+            return this.create_menu_button(name, desc, items);
         };
 
-        var create_indicator_menu_button = function() {
-
-             items = [{value: 'people_count', desc: '人数'},
-                {value: 'total_money', desc: '营收'},
-                {value: 'order_count', desc: '订单数'}];
-            return this.create_menu_button('indicator', '选择指标', items);
+        var create_indicator_menu_button = function(name, desc, items) {
+            name = name || 'indicator'
+            desc = desc || '选择指标'
+            items = items || [{value: 'people_count', desc: '人数'},
+                      {value: 'total_money', desc: '营收'},
+                      {value: 'order_count', desc: '订单数'}];
+            return this.create_menu_button(name, desc, items);
         };
 
-        var create_topn_menu_button = function() {
-            var items = [{value: '5', desc: '5'},
+        var create_topn_menu_button = function(name, desc, items) {
+            name = name || 'topn'
+            desc = desc || '选择前N位'
+            items = [{value: '5', desc: '5'},
                 {value: '10', desc: '10'},
                 {value: '15', desc: '15'},
                 {value: '20', desc: '20'}];
-            this.create_menu_button('topn', '选择前N位', items);
+            return this.create_menu_button(name, desc, items);
         };
 
-        var create_yesorno_menu_button = function() {
+        var create_yesorno_menu_button = function(name, desc, items) {
+            name = name || 'yesorno'
+            console.log('desc = '+ desc);
+            desc = desc || '--选择是或否'
+            items = [{value: '1', desc: '是'},
+                {value: '0', desc: '否'}]
+            return this.create_menu_button(name, desc, items)
+         }
 
-        }
+        var menu_mappings = [{type: 'indicator', func: create_indicator_menu_button},
+            {type: 'year', func: create_year_menu_button},
+            {type: 'topn', func: create_topn_menu_button},
+            {type: 'yesorno', func: create_yesorno_menu_button}];
 
-        var menu_mappings = [{name: 'indicator', func: create_indicator_menu_button},
-            {name: 'year', func: create_year_menu_button},
-            {name: 'topn', func: create_topn_menu_button}];
-
-        var get_menu_func = function(name) {
+        var get_menu_func = function(type) {
             var i;
             for (i = 0; i < menu_mappings.length; i++)
-                if (name === menu_mappings[i]['name'])
+                if (type === menu_mappings[i]['type'])
                     return menu_mappings[i]['func'];
         }
 
@@ -120,8 +139,8 @@ ReportChart.prototype = {
         var i;
         for (i = 0; i < param_menus.length; i++) {
             var func;
-            if (func = get_menu_func(param_menus[i]['name']))
-                menu_buttons.push(func.apply(this));
+            if (func = get_menu_func(param_menus[i]['type']))
+                menu_buttons.push(func.apply(this, [param_menus[i].name, param_menus[i].desc, param_menus[i].items]));
         }
 
         return menu_buttons;
@@ -140,9 +159,8 @@ ReportChart.prototype = {
                 .append(desc)
                 .append($("<span class='caret'>")))
             .append(dropdown_menu)
-            .append($("<span id='"+ this.id + "_menu_item_desc'>").append("&nbsp;人数"));
+            .append($("<span id='"+ this.id + '_' + param_name + "_menu_item_desc'>").append("&nbsp;"+items[0]['desc']));
     },
-
 
     create_menu_item: function(indicator_name, indicator_value, desc) {
         var menu_item = $("<a role='menuitem' tabindex='-1' href='#'>" + desc + "</a>");
@@ -154,13 +172,7 @@ ReportChart.prototype = {
         return $("<li role='presentation'>").append(menu_item);
     },
 
-    update_report_chart: function (key, value, desc) {
-        window[this.graph_name].destroy();
-        this.params[key] = value;
-        $("#" + this.id + "_menu_item_desc").html('&nbsp;'+desc);
-        $("#" + this.id + "_legend").remove();
-        this.send_request();
-    }
+
 
 }
 

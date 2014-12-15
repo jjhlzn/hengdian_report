@@ -1,64 +1,49 @@
-var pie_request = null;
-
-function change_dataset(key, value, desc) {
-    window.pie.destroy();
-    window.pie1.destroy();
-    document.getElementById('table_province').innerHTML = "";
-    document.getElementById('table_city').innerHTML = "";
-    pie_request.params[key] = value;
-    $('#lbl_' + key).html(desc);
-    $("ul.pie-legend").remove();
-    pie_request.send_request();
-}
-
 $(document).ready(function() {
     function response_deal_fuction(respJSON) {
-        function pie_draw_table(datasets_src, table_id, topn) {
-            var table1 = document.getElementById(table_id);
+        function pie_draw_table(id, datasets_src, topn) {
+            var table_id = id+'_table';
+            var table = $("<table class = 'table' id = '" + table_id + "' width='100%'>");
             for (var i = 0; i < datasets_src.length; i++) {
-                var tr;
+                var tr = $('<tr>');
                 if (i < topn)
-                    tr = $('<tr>').addClass('topn')[0];
-                else
-                    tr = $('<tr>')[0];
-                var td0 = document.createElement('td');
-                td0.innerHTML = datasets_src[i].rank;
-                var td1 = document.createElement('td');
-                td1.innerHTML = datasets_src[i].label;
-                var td2 = document.createElement('td');
-                td2.innerHTML = datasets_src[i].value;
-                var td3 = document.createElement('td');
-                td3.innerHTML = datasets_src[i].percent;
-                tr.appendChild(td0);
-                tr.appendChild(td1);
-                tr.appendChild(td2);
-                tr.appendChild(td3);
-                table1.appendChild(tr);
+                    tr.addClass('topn');
+                $('<td>').html(datasets_src[i].rank).appendTo(tr);
+                $('<td>').html(datasets_src[i].label).appendTo(tr);
+                $('<td>').html(datasets_src[i].value).appendTo(tr);
+                $('<td>').html(datasets_src[i].percent).appendTo(tr);
+                tr.appendTo(table);
             }
+            table.appendTo('#'+id+" > .panel-body");
         }
-
-        var datasets_src = respJSON.data.datasets_src;
-        var datasets1 = respJSON.data.datasets1;
-        var datasets1_src = respJSON.data.datasets1_src;
-
-        var options = {  responsive: true,
-            pointHitDetectionRadius: 1,
-            datasetFill: false,
-            pointDot: respJSON.data.pointDot };
-        pie_draw_table(datasets_src, 'table_province', this.params.topn);
-        this.draw_report('canvas1', datasets1, 'pie1', options);
-        pie_draw_table(datasets1_src, 'table_city', this.params.topn);
+        pie_draw_table(this.id, respJSON.data.datasets_src, this.params.topn);
     }
 
-    var params = {}
-    params['year'] = '2014'
-    params['indicator'] = 'people_count'
-    params['is_real_sell_info'] = '0'
-    params['topn'] = '15'
-    pie_request = new PieReportChart('canvas', 'pie', "/network_order_area_compares.json", response_deal_fuction)
-    //send_pie_data_request('canvas', 'pie', "/network_order_area_compares.json", response_deal_fuction)
-    pie_request.params = params;
-    pie_request.send_request();
+    var update_report_chart = function (key, value, desc) {
+        window[this.graph_name].destroy();
+        this.params[key] = value;
+        $("#" + this.id + '_' + key + "_menu_item_desc").html('&nbsp;'+desc);
+        $("#" + this.id + "_legend").remove();
+        $('#'+this.id+'_table').remove();
+        this.send_request();
+    }
+
+    var province_pie = new PieReportChart({id: 'province_pie',
+        name: '省级比较',
+        url: "/network_order_area_compares.json",
+        menus: [{type: 'year'}, {type: 'indicator'}, {type: 'yesorno', name: 'is_real_sell_info', desc: '是否实际售票数据'}, {type: 'topn'}],
+        other_params: {type: 'province'},
+        other_response_deal_function: response_deal_fuction,
+        update_report_chart: update_report_chart
+    }).send_request();
+
+    var city_pie = new PieReportChart({id: 'city_pie',
+        name: '地区级市比较',
+        url: "/network_order_area_compares.json",
+        menus: [{type: 'year'}, {type: 'indicator'}, {type: 'yesorno', name: 'is_real_sell_info', desc: '是否实际售票数据'}, {type: 'topn'}],
+        other_params: {type: 'city'},
+        other_response_deal_function: response_deal_fuction,
+        update_report_chart: update_report_chart
+    }).send_request();
 } );
 
 
