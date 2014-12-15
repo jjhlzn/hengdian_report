@@ -170,7 +170,7 @@ ReportChart.prototype = {
                          that.update_report_chart(indicator_name, indicator_value, desc);
                      });
         return $("<li role='presentation'>").append(menu_item);
-    },
+    }
 
 
 
