@@ -57,10 +57,10 @@ class DayReportScript
   end
   def get_all_order_sql(date)
     ticket_db_name = get_ticket_database(date)
-    sql =  """SELECT * FROM #{ticket_server}.#{ticket_db_name}.dbo.v_tbdTravelOk a
+    sql =  """SELECT * FROM #{ticket_db_prefix(date)}.v_tbdTravelOk a
               WHERE DDate = '#{date.strftime('%F')}'
                     AND a.Flag in (0, 1)
-                    AND EXISTS(SELECT * FROM #{ticket_server}.#{ticket_db_name}.dbo.tbdGroupType b
+                    AND EXISTS(SELECT * FROM #{ticket_db_prefix(date)}.tbdGroupType b
                                WHERE a.DGroupType = b.DName AND a.DGroupTypeAssort = b.sType
                                      AND DGroupRoomType = '网络用房')"""
     Rails.logger.debug { sql }
@@ -68,13 +68,12 @@ class DayReportScript
   end
 
   def get_ticket_order_sql(date)
-    ticket_db_name = get_ticket_database(date)
-    sql =  """SELECT * FROM #{ticket_server}.#{ticket_db_name}.dbo.v_tbdTravelOk a
+    sql =  """SELECT * FROM #{ticket_db_prefix(date)}.v_tbdTravelOk a
               WHERE DDate = '#{date.strftime('%F')}'
               AND a.Flag in (0, 1)
-              AND NOT EXISTS (SELECT SellID FROM #{ticket_server}.#{ticket_db_name}.dbo.v_tbdTravelOkPro b
+              AND NOT EXISTS (SELECT SellID FROM #{ticket_db_prefix(date)}.v_tbdTravelOkPro b
                               WHERE a.SellID = b.SellID AND b.CurID = 'N1')
-              AND EXISTS(SELECT * FROM #{ticket_server}.#{ticket_db_name}.dbo.tbdGroupType b
+              AND EXISTS(SELECT * FROM #{ticket_db_prefix(date)}.tbdGroupType b
                          WHERE a.DGroupType = b.DName AND a.DGroupTypeAssort = b.sType
                                AND DGroupRoomType = '网络用房')"""
     Rails.logger.debug { sql }
@@ -82,15 +81,14 @@ class DayReportScript
   end
 
   def get_hotel_order_sql(date)
-    ticket_db_name = get_ticket_database(date)
-    sql =  """SELECT * FROM #{ticket_server}.#{ticket_db_name}.dbo.v_tbdTravelOk a
+    sql =  """SELECT * FROM #{ticket_db_prefix(date)}.v_tbdTravelOk a
               WHERE DDate = '#{date.strftime('%F')}'
               AND a.Flag in (0, 1)
-              AND EXISTS (SELECT SellID FROM #{ticket_server}.#{ticket_db_name}.dbo.v_tbdTravelOkPro b
+              AND EXISTS (SELECT SellID FROM #{ticket_db_prefix(date)}.v_tbdTravelOkPro b
                           WHERE a.SellID = b.SellID AND b.CurID = 'N1')
-              AND (SELECT COUNT(*) FROM iccard14.dbo.v_tbdTravelOkPro b
+              AND (SELECT COUNT(*) FROM #{ticket_db_prefix(date)}.v_tbdTravelOkPro b
                    WHERE a.SellID = b.SellID AND AllowJdFlag = 0) = 1
-              AND EXISTS(SELECT * FROM #{ticket_server}.#{ticket_db_name}.dbo.tbdGroupType b
+              AND EXISTS(SELECT * FROM #{ticket_db_prefix(date)}.tbdGroupType b
                          WHERE a.DGroupType = b.DName AND a.DGroupTypeAssort = b.sType
                                AND DGroupRoomType = '网络用房')"""
     Rails.logger.debug { sql }
@@ -98,15 +96,14 @@ class DayReportScript
   end
 
   def get_package_order_sql(date)
-    ticket_db_name = get_ticket_database(date)
-    sql =  """SELECT * FROM #{ticket_server}.#{ticket_db_name}.dbo.v_tbdTravelOk a
+    sql =  """SELECT * FROM #{ticket_db_prefix(date)}.v_tbdTravelOk a
               WHERE DDate = '#{date.strftime('%F')}'
               AND a.Flag in (0, 1)
-              AND EXISTS (SELECT SellID FROM iccard14.dbo.v_tbdTravelOkPro b
+              AND EXISTS (SELECT SellID FROM #{ticket_db_prefix(date)}.v_tbdTravelOkPro b
                           WHERE a.SellID = b.SellID AND b.CurID = 'N1')
-              AND (SELECT COUNT(*) FROM iccard14.dbo.v_tbdTravelOkPro b
+              AND (SELECT COUNT(*) FROM #{ticket_db_prefix(date)}.v_tbdTravelOkPro b
                    WHERE a.SellID = b.SellID AND AllowJdFlag = 0) > 1
-              AND EXISTS(SELECT * FROM iccard14.dbo.tbdGroupType b
+              AND EXISTS(SELECT * FROM #{ticket_db_prefix(date)}.tbdGroupType b
                          WHERE a.DGroupType = b.DName AND a.DGroupTypeAssort = b.sType
                                AND DGroupRoomType = '网络用房')"""
     Rails.logger.debug { sql }

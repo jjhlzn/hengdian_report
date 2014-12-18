@@ -1,14 +1,18 @@
 require 'tiny_tds'
 
 module DBUtils
-  @@ticket_server = ''
+  @@ticket_server = 'TicketServer'
 
   private
   def execute_array(sql)
     client = TinyTds::Client.new(:username => 'sa',
-                                 :password => '123456',
-                                 :host => '10.1.36.168',
-                                 :timeout => 60)
+                                 :password => 'hdapp@)!@',
+                                 :host => '10.1.87.110',
+                                 :timeout => 60,
+                                 :ANSI_NULLS => true,
+                                 :ANSI_WARNINGS => true)
+    client.execute('set   ansi_nulls   on')
+    client.execute('set   ansi_warnings   on')
     result = client.execute(sql)
     array = []
     result.each do |row|
