@@ -8,12 +8,22 @@ ReportChart.prototype = {
     params: {},
     send_request: function() {
         var that = this;
+        $('#' + this.id + "  .labeled-chart-container").hide();
+        $("<div>", {id: 'loading_img', style: 'width: 100%; height: '+ parseInt(this.height) + 'px; margin: auto auto;'})
+                .append($("<div>" , {style: 'width: 100px; height: 133px; margin: '+ (parseInt(this.height) - 133) / 2 +'px auto; padding: auto auto; '})
+                            .append($("<img>", {src:  '<%= image_url 'loading.gif' %>',
+                                    style: 'width: 100px;'})))
+                .appendTo('#'+this.id + ' > .panel-body');
+
         $.ajax({
             type: "GET",
             url: this.url,
             dataType: "json",
             data: that.params,
             success:  function(respJSON, textStatus, jqXHR){
+
+                $('#' + that.id + " .labeled-chart-container").show();
+                $("#loading_img").remove();
                 if (respJSON.status != 0) {
                     alert('服务器返回错误（status = ' + respJSON.status + ", message = " + respJSON.message + ')');
                     return;

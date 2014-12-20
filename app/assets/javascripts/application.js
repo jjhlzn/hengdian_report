@@ -18,7 +18,7 @@
 //= require sb-admin-2
 //= require chartjs/Chart.js
 //= require utils
-//= require base_report
+//= require base_report.js.erb
 //= require pie_style_report
 //= require line_style_report
 //= require bar_style_report
