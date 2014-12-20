@@ -1,5 +1,5 @@
 require 'rails_helper'
 
-RSpec.describe NetworkOrderYearlyProductionCompareReportsController, :type => :controller do
+RSpec.describe NetworkOrderYearlyReportsController, :type => :controller do
 
 end
