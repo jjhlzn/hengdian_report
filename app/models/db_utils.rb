@@ -18,6 +18,7 @@ module DBUtils
     result.each do |row|
       array.push row
     end
+    #关闭连接
     client.close
     return array
   end
