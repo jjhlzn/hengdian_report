@@ -18,7 +18,7 @@ class Latest30DaysReportScript
                                                                   COL_ORDER_COMEDATE,
                                                                   indicator,
                                                                   from_date,
-                                                                  to_date)
+                                                                  to_date) {|x, y| x.strftime('%F') == y.strftime('%F')}
       result << {label: year,
                  data: result_sets.map { |x| x[indicator].to_i }}
     end
