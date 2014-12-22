@@ -14,7 +14,7 @@ class Latest30DaysReportScript
       from_date = DateTime.new(year, from_date.month, from_date.day)
       to_date = DateTime.new(year, to_date.month, to_date.day)
       result_sets = execute_array(get_sql(indicator, year, from_date, to_date))
-      NetworkOrderReportHelper.insert_defult_values_if_not_exists(result_sets,
+      result_sets = NetworkOrderReportHelper.insert_defult_values_if_not_exists(result_sets,
                                                                   COL_ORDER_COMEDATE,
                                                                   indicator,
                                                                   from_date,

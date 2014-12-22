@@ -56,7 +56,6 @@ class DayReportScript
     end
   end
   def get_all_order_sql(date)
-    ticket_db_name = get_ticket_database(date)
     sql =  """SELECT * FROM #{ticket_db_prefix(date)}.v_tbdTravelOk a
               WHERE DDate = '#{date.strftime('%F')}'
                     AND a.Flag in (0, 1)
@@ -87,7 +86,7 @@ class DayReportScript
               AND EXISTS (SELECT SellID FROM #{ticket_db_prefix(date)}.v_tbdTravelOkPro b
                           WHERE a.SellID = b.SellID AND b.CurID = 'N1')
               AND (SELECT COUNT(*) FROM #{ticket_db_prefix(date)}.v_tbdTravelOkPro b
-                   WHERE a.SellID = b.SellID AND AllowJdFlag = 0) = 1
+                   WHERE a.SellID = b.SellID AND AllowJdFlag = 0 AND CurID != '05') = 1
               AND EXISTS(SELECT * FROM #{ticket_db_prefix(date)}.tbdGroupType b
                          WHERE a.DGroupType = b.DName AND a.DGroupTypeAssort = b.sType
                                AND DGroupRoomType = '网络用房')"""
