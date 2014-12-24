@@ -11,15 +11,14 @@ class NetworkOrderAreaComparesController < ApplicationController
         #获取参数year, indicator, is_real_sell_info, topn
         #查询数据库获取数据
         service = AreaCompareScript.new
-        province_datasets= service.get_data(params[:year],
+        result_set= service.get_data(params[:year],
                                             params[:type],
                                             params[:indicator],
                                             params[:is_real_sell_info] == '1',
                                             params[:topn].to_i)
 
-        return_data = {'datasets' => province_datasets[0],
-                       'datasets_src' => province_datasets[1],
-                       'params' => params}
+        return_data = {'datasets' => result_set[0],
+                       'datasets_src' => result_set[1]}
 
 
         #返回结果

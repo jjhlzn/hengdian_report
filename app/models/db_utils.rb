@@ -8,9 +8,9 @@ module DBUtils
   def execute_array(sql)
     client = TinyTds::Client.new(:username => 'sa',
                                  #:password => 'hdapp@)!@',
-                                 :password => '123456',
+                                 :password => 'hengdian!@#',
                                  #:host => '10.1.87.110',
-                                 :host => '10.1.36.168',
+                                 :host => 'bbs.hengdianworld.com',
                                  :timeout => 60,
                                  :ANSI_NULLS => true,
                                  :ANSI_WARNINGS => true)
@@ -21,7 +21,7 @@ module DBUtils
     result.each do |row|
       array.push row
     end
-    #关闭连接
+    #关闭连接12
     client.close
     return array
   end
