@@ -18,3 +18,4 @@
 /.idea
 /app/models/db_utils.rb
 
+app/models/db_utils.rb
