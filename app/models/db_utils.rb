@@ -2,15 +2,16 @@ require 'tiny_tds'
 
 module DBUtils
   #@@ticket_server = 'TicketServer'
-  @@ticket_server = ''
+  @@ticket_server = Rails.application.config.mssql_ticket_server
 
   private
   def execute_array(sql)
-    client = TinyTds::Client.new(:username => 'sa',
+    Rails.logger.debug { Rails.application.config.mssql_host }
+    client = TinyTds::Client.new(:username => Rails.application.config.mssql_username,
                                  #:password => 'hdapp@)!@',
-                                 :password => 'hengdian!@#',
+                                 :password => Rails.application.config.mssql_password,
                                  #:host => '10.1.87.110',
-                                 :host => 'bbs.hengdianworld.com',
+                                 :host => Rails.application.config.mssql_host,
                                  :timeout => 60,
                                  :ANSI_NULLS => true,
                                  :ANSI_WARNINGS => true)

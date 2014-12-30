@@ -1,5 +1,9 @@
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
+  config.mssql_host = 'bbs.hengdianworld.com'
+  config.mssql_ticket_server = ''
+  config.mssql_username = 'sa'
+  config.mssql_password = 'hengdian!@#'
 
   # In the development environment your application's code is reloaded on
   # every request. This slows down response time but is perfect for development
@@ -8,6 +12,7 @@ Rails.application.configure do
 
   # Do not eager load code on boot.
   config.eager_load = false
+
 
   # Show full error reports and disable caching.
   config.consider_all_requests_local       = true

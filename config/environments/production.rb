@@ -1,5 +1,9 @@
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
+  config.mssql_host = 'e.hengdianworld.com'
+  config.mssql_ticket_server = ''
+  config.mssql_username = 'sa'
+  config.mssql_password = 'hdapp@)!@'
 
   # Code is not reloaded between requests.
   config.cache_classes = true
