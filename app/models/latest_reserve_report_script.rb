@@ -32,13 +32,25 @@ class LatestReserveReportScript
   def get_sql(indicator, datetype, is_only_used, year, from_date, to_date)
     indicator_field = ''
     datetype_field = ''
-    case indicator
-      when INDICATOR_ORDER_COUNT then
-        indicator_field = 'COUNT(*)'
-      when INDICATOR_PEOPLE_COUNT then
-        indicator_field = 'SUM(b.DSjNumber)'
-      when INDICATOR_TOTAL_MONEY then
-        indicator_field = 'SUM(b.DSjAmount)'
+
+    if is_only_used
+      case indicator
+        when INDICATOR_ORDER_COUNT then
+          indicator_field = 'COUNT(*)'
+        when INDICATOR_PEOPLE_COUNT then
+          indicator_field = 'SUM(a.DSjNumber)'
+        when INDICATOR_TOTAL_MONEY then
+          indicator_field = 'SUM(b.DSjAmount)'
+      end
+    else
+      case indicator
+        when INDICATOR_ORDER_COUNT then
+          indicator_field = 'COUNT(*)'
+        when INDICATOR_PEOPLE_COUNT then
+          indicator_field = 'SUM(a.DDjNumber)'
+        when INDICATOR_TOTAL_MONEY then
+          indicator_field = 'SUM(a.DAmount)'
+      end
     end
 
     case datetype
