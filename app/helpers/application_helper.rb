@@ -10,7 +10,7 @@ module ApplicationHelper
   def handle_days(from_date, to_date)
     if from_date.year != to_date.year
       if to_date.year == 2015
-        result = [from_date, DateTime.new(from_date.year, 12, 31)]
+        result = [DateTime.new(from_date.year, 12, 1), DateTime.new(from_date.year, 12, 31)]
       else
         result = [DateTime.new(to_date.year, 1, 1), to_date]
       end
