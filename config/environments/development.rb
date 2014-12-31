@@ -1,6 +1,6 @@
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
-  config.mssql_host = 'bbs.hengdianworld.com'
+  config.mssql_host = 'www.hengdianworld.com'
   config.mssql_ticket_server = ''
   config.mssql_username = 'sa'
   config.mssql_password = 'hengdian!@#'
