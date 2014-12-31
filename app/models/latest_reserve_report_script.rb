@@ -1,5 +1,5 @@
 require 'hengdian'
-class Latest30DaysReportScript
+class LatestReserveReportScript
   include Hengdian::Contants
   include TSColumns
   include DBUtils
@@ -7,15 +7,15 @@ class Latest30DaysReportScript
 
   #返回包含在years中各年的日期从[from_date, to_date]的订单汇总信息
   #注意: from_date和to_date必须在同一年,否则报错
-  def get_data(indicator, years, from_date, to_date)
+  def get_data(indicator, datetype, is_only_used_orders, years, from_date, to_date)
     raise "from_date必须和to_date在同一年份" unless from_date.year == to_date.year
     result = []
     years.each_with_index do |year, index|
       from_date = DateTime.new(year, from_date.month, from_date.day)
       to_date = DateTime.new(year, to_date.month, to_date.day)
-      result_sets = execute_array(get_sql(indicator, year, from_date, to_date))
+      result_sets = execute_array(get_sql(indicator, datetype, is_only_used_orders, year, from_date, to_date))
       result_sets = NetworkOrderReportHelper.insert_defult_values_if_not_exists(result_sets,
-                                                                  COL_ORDER_COMEDATE,
+                                                                  'date',
                                                                   indicator,
                                                                   from_date,
                                                                   to_date) {|x, y| x.strftime('%F') == y.strftime('%F')}
@@ -29,27 +29,42 @@ class Latest30DaysReportScript
   end
 
   private
-  def get_sql(indicator, year, from_date, to_date)
-    field = ''
+  def get_sql(indicator, datetype, is_only_used, year, from_date, to_date)
+    indicator_field = ''
+    datetype_field = ''
     case indicator
       when INDICATOR_ORDER_COUNT then
-        field = 'COUNT(*)'
+        indicator_field = 'COUNT(*)'
       when INDICATOR_PEOPLE_COUNT then
-        field = 'SUM(b.DSjNumber)'
+        indicator_field = 'SUM(b.DSjNumber)'
       when INDICATOR_TOTAL_MONEY then
-        field = 'SUM(b.DSjAmount)'
+        indicator_field = 'SUM(b.DSjAmount)'
+    end
+
+    case datetype
+      when DATETYPE_BY_COMEDATE then
+        datetype_field = 'DComeDate'
+      when DATETYPE_BY_ORDERDATE then
+        datetype_field = 'DDate'
+    end
+
+    flags = ''
+    if is_only_used then
+      flags = '1'
+    else
+      flags = '0, 1'
     end
 
     ticket_db_name = get_ticket_database(DateTime.new(year.to_i, 1, 1))
-    sql = "" "SELECT DComeDate, #{field} as #{indicator} FROM #{ticket_server}.#{ticket_db_name}.dbo.v_tbdTravelOK a inner join
+    sql = "" "SELECT #{datetype_field} as date, #{indicator_field} as #{indicator} FROM #{ticket_server}.#{ticket_db_name}.dbo.v_tbdTravelOK a inner join
               #{ticket_server}.#{ticket_db_name}.dbo.v_tbdTravelOkOther b on a.SellID = b.SellID
-              WHERE Flag in (1)
+              WHERE Flag in (#{flags})
                     AND EXISTS(SELECT b.DName FROM #{ticket_server}.#{ticket_db_name}.dbo.tbdGroupType b
                                        WHERE a.DGroupType = b.DName AND a.DGroupTypeAssort = b.sType
                                              AND DGroupRoomType = '网络用房')
-                    AND DComeDate between '#{from_date.strftime('%F')}' and '#{to_date.strftime('%F')}'
-              GROUP BY DComeDate
-              ORDER BY DComeDate" ""
+                    AND #{datetype_field} between '#{from_date.strftime('%F')}' and '#{to_date.strftime('%F')}'
+              GROUP BY #{datetype_field}
+              ORDER BY #{datetype_field}"""
 
     Rails.logger.debug { sql }
     return sql

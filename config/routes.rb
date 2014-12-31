@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   root 'network_order_area_compares#index'
   get 'network_order_report/latest_30days_report'
   get 'network_order_yearly_reports/mobile_company_cmp'
+  get 'network_order_today_reports/reserve'
 
   resources :network_order_area_compares
   resources :network_order_today_reports

@@ -9,11 +9,10 @@ class NetworkOrderReportController < ApplicationController
   def latest_30days_report
     respond_to do |format|
       format.json do
-        service = Latest30DaysReportScript.new
+        service = LatestReserveReportScript.new
         years = [2014, 2013]
-        to_date = DateTime.now
-        from_date = DateTime.now.prev_month
-        result = service.get_data(params[:indicator], years, from_date, to_date)
+        dates = handle_days(DateTime.now.prev_month, DateTime.now)
+        result = service.get_data(params[:indicator], DATETYPE_BY_COMEDATE, true, years, dates[0], dates[1])
         render json: make_success_json_resp(result)
       end
     end

@@ -13,6 +13,9 @@ module Hengdian
     INDICATOR_PEOPLE_COUNT = 'people_count' #表示人数指标
     INDICATOR_TOTAL_MONEY = 'total_money'   #总体营收
     INDICATOR_ORDER_COUNT = 'order_count'   #订单数
+
+    DATETYPE_BY_COMEDATE = 'comedate'  #预达日期
+    DATETYPE_BY_ORDERDATE = 'orderdate' #预订日期
   end
 
   ORDER_TYPE_ALL = OrderType.new('all', '全部类型')
