@@ -11,7 +11,7 @@ class NetworkOrderTodayReportsController < ApplicationController
       format.json do
         service = DayReportScript.new
         date = DateTime.now
-        result = service.get_order_stat date, params[:indicator]
+        result = service.get_order_stat date, params[:datetype], params[:indicator]
         render json: make_success_json_resp(result)
       end
     end

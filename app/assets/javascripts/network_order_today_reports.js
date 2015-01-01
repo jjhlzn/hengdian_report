@@ -1,8 +1,9 @@
 $(document).ready(function () {
     new PieReportChart({
         id: 'pie_panel',
-        name: '门票, 酒店, 套餐比例',
-        url: '/network_order_today_reports.json'
+        name: '门票, 酒店, 套餐比例(当天)',
+        url: '/network_order_today_reports.json',
+        menus: [{type: 'datetype'}, {type: 'indicator'}]
     }).send_request()
 
     new LineReportChart({
