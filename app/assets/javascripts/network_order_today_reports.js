@@ -8,7 +8,8 @@ $(document).ready(function () {
     new LineReportChart({
         id: 'line_panel',
         name: '最近30天订单情况(已使用订单)',
-        url: '/network_order_report/latest_30days_report.json'
+        url: '/network_order_report/latest_30days_report.json',
+        menus: [{type: 'indicator', default: 'order_count'}]
     }).send_request();
 
     new LineReportChart({

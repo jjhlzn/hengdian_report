@@ -38,7 +38,7 @@ class LatestReserveReportScript
         when INDICATOR_ORDER_COUNT then
           indicator_field = 'COUNT(*)'
         when INDICATOR_PEOPLE_COUNT then
-          indicator_field = 'SUM(a.DSjNumber)'
+          indicator_field = 'SUM(b.DSjNumber)'
         when INDICATOR_TOTAL_MONEY then
           indicator_field = 'SUM(b.DSjAmount)'
       end

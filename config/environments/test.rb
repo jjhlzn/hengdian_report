@@ -1,15 +1,15 @@
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
-  config.mssql_host = 'bbs.hengdianworld.com'
-  config.mssql_ticket_server = ''
+  config.mssql_host = '10.1.87.110'
+  config.mssql_ticket_server = 'ticketserver'
   config.mssql_username = 'sa'
-  config.mssql_password = 'hengdian!@#'
+  config.mssql_password = 'hdapp@)!@'
 
   # The test environment is used exclusively to run your application's
   # test suite. You never need to work with it otherwise. Remember that
   # your test database is "scratch space" for the test suite and is wiped
   # and recreated between test runs. Don't rely on the data there!
-  config.cache_classes = true
+  config.cache_classes = false
 
 
   # Do not eager load code on boot. This avoids loading your whole application
@@ -39,6 +39,9 @@ Rails.application.configure do
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
 
+  config.log_level = :debug
+
+  config.assets.debug = true
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 end

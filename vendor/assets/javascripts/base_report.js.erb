@@ -97,57 +97,59 @@ ReportChart.prototype = {
     },
 
     create_menu_buttons: function(param_menus){
-        var create_year_menu_button = function(name, desc, items) {
+        var create_year_menu_button = function(name, desc, default_val, items) {
             name = name || 'year';
             desc = desc || '选择年份';
-            items = items || [{value: '2014', desc: '2014'},
+            items = items || [{value: '2015', desc: '2015'},
+                              {value: '2014', desc: '2014'},
                               {value: '2013', desc: '2013'}];
-            return this.create_menu_button(name, desc, items);
+            return this.create_menu_button(name, desc, default_val, items);
         };
 
-        var create_indicator_menu_button = function(name, desc, items) {
+        var create_indicator_menu_button = function(name, desc, default_val, items) {
             name = name || 'indicator'
             desc = desc || '选择指标'
-            items = items || [{value: 'total_money', desc: '营收'},
+            items = items || [
                         {value: 'people_count', desc: '人数'},
-                      {value: 'order_count', desc: '订单数'}];
-            return this.create_menu_button(name, desc, items);
+                        {value: 'total_money', desc: '营收'},
+                        {value: 'order_count', desc: '订单数'}];
+            return this.create_menu_button(name, desc, default_val, items);
         };
 
-        var create_topn_menu_button = function(name, desc, items) {
+        var create_topn_menu_button = function(name, desc, default_val, items) {
             name = name || 'topn'
             desc = desc || '选择前N位'
             items = [{value: '5', desc: '5'},
                 {value: '10', desc: '10'},
                 {value: '15', desc: '15'},
                 {value: '20', desc: '20'}];
-            return this.create_menu_button(name, desc, items);
+            return this.create_menu_button(name, desc, default_val, items);
         };
 
-        var create_yesorno_menu_button = function(name, desc, items) {
+        var create_yesorno_menu_button = function(name, desc, default_val, items) {
             name = name || 'yesorno'
             desc = desc || '选择是或否'
             items = [{value: '1', desc: '是'},
                 {value: '0', desc: '否'}]
-            return this.create_menu_button(name, desc, items)
+            return this.create_menu_button(name, desc, default_val, items)
          };
 
-        var create_ordertype_menu_button = function(name, desc, items) {
+        var create_ordertype_menu_button = function(name, desc, default_val, items) {
             name = name || 'ordertype'
             desc = desc || '选择订单类型'
             items = [{value: 'all', desc: '全部'},
                 {value: 'ticket', desc: '门票'},
                 {value: 'hotel', desc: '酒店'},
                 {value: 'package', desc: '套餐'}]
-            return this.create_menu_button(name, desc, items)
+            return this.create_menu_button(name, desc, default_val, items)
         };
 
-        var create_datetype_menu_button = function(name, desc, items) {
+        var create_datetype_menu_button = function(name, desc, default_val, items) {
             name = name || "datetype"
             desc = desc || "选择日期类型"
             items = [{value: 'comedate', desc: '到达日期'},
-                {value: 'orderdate', desc: '预订日期'}]
-            return this.create_menu_button(name, desc, items)
+                     {value: 'orderdate', desc: '预订日期'}]
+            return this.create_menu_button(name, desc, default_val, items)
         }
 
         var menu_mappings = [{type: 'indicator', func: create_indicator_menu_button},
@@ -169,17 +171,26 @@ ReportChart.prototype = {
         for (i = 0; i < param_menus.length; i++) {
             var func;
             if (func = get_menu_func(param_menus[i]['type']))
-                menu_buttons.push(func.apply(this, [param_menus[i].name, param_menus[i].desc, param_menus[i].items]));
+                menu_buttons.push(func.apply(this, [param_menus[i].name, param_menus[i].desc,
+                    param_menus[i].default, param_menus[i].items]));
         }
 
         return menu_buttons;
     },
 
-    create_menu_button: function(param_name, desc, items) {
-        this.params[param_name] = items[0]['value'];
+    create_menu_button: function(param_name, desc, default_val, items) {
+        var i;
+        var default_value = items[0]['value'], default_desc = items[0]['desc'];
+        if (default_val != undefined) {
+            default_value = default_val;
+            for (i = 0; i < items.length; i++)
+                if (items[i].value == default_value)
+                    default_desc = items[i].desc;
+        }
+        this.params[param_name] = default_value;
         var menu_id  = this.id + '_' + param_name + '_dropdownmenu';
         var dropdown_menu =  $("<ul class='dropdown-menu' role='menu' aria-labelledby='" + menu_id + "'>");
-        var i;
+
         for (i = 0; i < items.length; i++)
             dropdown_menu.append(this.create_menu_item(param_name, items[i]['value'], items[i]['desc']));
         return $("<div class='btn-group'>")
@@ -188,7 +199,7 @@ ReportChart.prototype = {
                 .append(desc)
                 .append($("<span class='caret'>")))
             .append(dropdown_menu)
-            .append($("<span id='"+ this.id + '_' + param_name + "_menu_item_desc'>").append("&nbsp;"+items[0]['desc']));
+            .append($("<span id='"+ this.id + '_' + param_name + "_menu_item_desc'>").append("&nbsp;"+default_desc));
     },
 
     create_menu_item: function(indicator_name, indicator_value, desc) {
