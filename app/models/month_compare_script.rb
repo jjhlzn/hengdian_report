@@ -12,7 +12,7 @@ class MonthCompareScript
   def get_data(years, indicator, order_type)
     result = []
     years.each_with_index do |year|
-      result_sets = execute_array(get_sql(indicator, order_type, year))
+      result_sets = execute_query(get_sql(indicator, order_type, year))
       result_sets = NetworkOrderReportHelper.insert_defult_values_if_not_exists(result_sets,
                                                                   'month',
                                                                   indicator,

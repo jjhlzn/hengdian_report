@@ -8,7 +8,7 @@ class YearlyMobileCompanyCompareScript
   def get_data(year, indicator, topN)
     # 组装sql语句, 查询数据库
     sql = get_sql(year, indicator)
-    rows = execute_array(sql)
+    rows = execute_query(sql)
 
     return deal_result_set(rows, 'corp', topN, indicator)
   end

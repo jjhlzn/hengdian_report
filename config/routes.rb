@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   get 'network_order_report/latest_30days_report'
   get 'network_order_yearly_reports/mobile_company_cmp'
   get 'network_order_today_reports/reserve'
+  get 'timer_task/init'
 
   resources :network_order_area_compares
   resources :network_order_today_reports
@@ -10,6 +11,7 @@ Rails.application.routes.draw do
   resources :network_order_yearly_agent_reports
   resources :network_order_yearly_reports
   resources :network_order_month_reports
+  resources :timer_task
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

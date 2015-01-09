@@ -14,7 +14,7 @@ class AreaCompareScript
 
     # 组装sql语句, 查询数据库
     sql = get_sql(year.to_i, area_Type_field, indicator, is_real_sell_info)
-    rows = execute_array(sql)
+    rows = execute_query(sql)
 
     return deal_result_set(rows, area_Type_field, topN, indicator)
   end

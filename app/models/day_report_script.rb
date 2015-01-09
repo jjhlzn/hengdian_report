@@ -27,7 +27,7 @@ class DayReportScript
 
   private
   def get_order_stat0(date, order_type, indicator)
-    orders = execute_array(get_sql(date, order_type))
+    orders = execute_query(get_sql(date, order_type))
     case indicator
       when INDICATOR_ORDER_COUNT then
         orders.count

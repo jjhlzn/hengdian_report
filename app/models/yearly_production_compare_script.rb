@@ -24,7 +24,7 @@ class YearlyProductionCompareScript
 
   private
   def get_order_stat0(year, order_type, indicator)
-    orders = execute_array(get_sql(year, order_type))
+    orders = execute_query(get_sql(year, order_type))
     case indicator
       when INDICATOR_ORDER_COUNT then
         orders.count

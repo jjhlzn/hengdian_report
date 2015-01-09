@@ -13,7 +13,7 @@ class LatestReserveReportScript
     years.each_with_index do |year, index|
       from_date = DateTime.new(year, from_date.month, from_date.day)
       to_date = DateTime.new(year, to_date.month, to_date.day)
-      result_sets = execute_array(get_sql(indicator, datetype, is_only_used_orders, year, from_date, to_date))
+      result_sets = execute_query(get_sql(indicator, datetype, is_only_used_orders, year, from_date, to_date))
       result_sets = NetworkOrderReportHelper.insert_defult_values_if_not_exists(result_sets,
                                                                   'date',
                                                                   indicator,
