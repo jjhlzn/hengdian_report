@@ -22,7 +22,8 @@ class AreaCompareScript
   def get_sql(year, area_type_field, indicator, is_real_sell_info = false)
     date = DateTime.new(year, 1, 1)
     if is_real_sell_info
-      sql = """SELECT #{area_type_field}, COUNT(*) as order_count, SUM(DDjNumber) as people_count, cast(SUM(DAmount) as int) as total_money
+      sql = <<-SQL
+               SELECT #{area_type_field}, COUNT(*) as order_count, SUM(DDjNumber) as people_count, cast(SUM(DAmount) as int) as total_money
                FROM (SELECT a.Sellid, DTel, c.DSjNumber as DDjNumber, (c.DSjAmount - c.DSjYhAmount) as DAmount,
                            (SELECT #{area_type_field} FROM report.dbo.t_phonenumber where phonenumber = SUBSTRING(DTel,0,8)) as #{area_type_field}
                      FROM #{ticket_db_prefix(date)}.v_tbdTravelOk a inner join #{ticket_db_prefix(date)}.v_tbdTravelOkCustomer b on a.SellID = b.SellID
@@ -31,7 +32,8 @@ class AreaCompareScript
                                                   and a.DGroupTypeAssort = b.sType and DGroupRoomType = '网络用房')
                           and DComeDate >= '#{year}-1-1' and DComeDate <= '#{year}-12-31') as a
                GROUP BY #{area_type_field}
-               order by #{indicator} desc"""
+               order by #{indicator} desc
+            SQL
     else
       sql = """SELECT #{area_type_field}, COUNT(*) as order_count, SUM(DDjNumber) as people_count, cast(SUM(DAmount) as int) as total_money
                FROM (SELECT a.Sellid, DTel, a.DDjNumber, a.DAmount,
