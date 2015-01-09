@@ -1,15 +1,16 @@
 $(document).ready(function () {
     new PieReportChart({
         id: 'pie_panel',
-        name: '门票, 酒店, 套餐比例',
-        url: '/network_order_today_reports.json'
+        name: '门票, 酒店, 套餐比例(当天)',
+        url: '/network_order_today_reports.json',
+        menus: [{type: 'datetype'}, {type: 'indicator'}]
     }).send_request()
 
     new LineReportChart({
         id: 'line_panel',
         name: '最近30天订单情况(已使用订单)',
         url: '/network_order_report/latest_30days_report.json',
-        menus: [{type: 'indicator', default: 'order_count'}]
+        menus: [{type: 'indicator'}]
     }).send_request();
 
     new LineReportChart({

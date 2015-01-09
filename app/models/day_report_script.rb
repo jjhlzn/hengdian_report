@@ -12,13 +12,13 @@ class DayReportScript
   end
 
   #获取指定日期的订单分析,这个只关心预订的情况,不关心订单的实际使用情况
-  def get_order_stat(date=DateTime.now, indicator = INDICATOR_ORDER_COUNT)
+  def get_order_stat(date, datetype, indicator = INDICATOR_ORDER_COUNT)
     result = []
     [ORDER_TYPE_TICKET, ORDER_TYPE_HOTEL, ORDER_TYPE_PACKAGE].each_with_index do |x, index|
        result << {
                      id:   x.id,
                      label: x.name,
-                     value: get_order_stat0(date, x, indicator).to_i,
+                     value: get_order_stat0(date, x, datetype, indicator).to_i,
                      color: @@colors[index]
                  }
     end
@@ -26,8 +26,9 @@ class DayReportScript
   end
 
   private
-  def get_order_stat0(date, order_type, indicator)
-    orders = execute_query(get_sql(date, order_type))
+
+  def get_order_stat0(date, order_type, datetype, indicator)
+    orders = execute_query(get_sql(date, order_type, datetype))
     case indicator
       when INDICATOR_ORDER_COUNT then
         orders.count
@@ -41,23 +42,23 @@ class DayReportScript
   end
 
   #type表示订单的类型, 0 = 全部订单, 1 = 单门票, 2 = 单酒店, 3 = 套餐
-  def get_sql(date, order_type)
+  def get_sql(date, order_type, datetype)
     case order_type
       when ORDER_TYPE_ALL then
-        get_all_order_sql(date)
+        get_all_order_sql(date, datetype)
       when ORDER_TYPE_TICKET then
-        get_ticket_order_sql(date)
+        get_ticket_order_sql(date, datetype)
       when ORDER_TYPE_HOTEL then
-        get_hotel_order_sql(date)
+        get_hotel_order_sql(date, datetype)
       when ORDER_TYPE_PACKAGE then
-        get_package_order_sql(date)
+        get_package_order_sql(date, datetype)
       else
         raise 'unknown order type'
     end
   end
-  def get_all_order_sql(date)
+  def get_all_order_sql(date, datetype)
     sql =  """SELECT * FROM #{ticket_db_prefix(date)}.v_tbdTravelOk a
-              WHERE DDate = '#{date.strftime('%F')}'
+              WHERE #{get_date_field(datetype)} = '#{date.strftime('%F')}'
                     AND a.Flag in (0, 1)
                     AND EXISTS(SELECT * FROM #{ticket_db_prefix(date)}.tbdGroupType b
                                WHERE a.DGroupType = b.DName AND a.DGroupTypeAssort = b.sType
@@ -66,9 +67,9 @@ class DayReportScript
     return sql
   end
 
-  def get_ticket_order_sql(date)
+  def get_ticket_order_sql(date, datetype)
     sql =  """SELECT * FROM #{ticket_db_prefix(date)}.v_tbdTravelOk a
-              WHERE DDate = '#{date.strftime('%F')}'
+              WHERE  #{get_date_field(datetype)} = '#{date.strftime('%F')}'
               AND a.Flag in (0, 1)
               AND NOT EXISTS (SELECT SellID FROM #{ticket_db_prefix(date)}.v_tbdTravelOkPro b
                               WHERE a.SellID = b.SellID AND b.CurID = 'N1')
@@ -79,9 +80,9 @@ class DayReportScript
     return sql
   end
 
-  def get_hotel_order_sql(date)
+  def get_hotel_order_sql(date, datetype)
     sql =  """SELECT * FROM #{ticket_db_prefix(date)}.v_tbdTravelOk a
-              WHERE DDate = '#{date.strftime('%F')}'
+              WHERE  #{get_date_field(datetype)} = '#{date.strftime('%F')}'
               AND a.Flag in (0, 1)
               AND EXISTS (SELECT SellID FROM #{ticket_db_prefix(date)}.v_tbdTravelOkPro b
                           WHERE a.SellID = b.SellID AND b.CurID = 'N1')
@@ -94,9 +95,9 @@ class DayReportScript
     return sql
   end
 
-  def get_package_order_sql(date)
+  def get_package_order_sql(date, datetype)
     sql =  """SELECT * FROM #{ticket_db_prefix(date)}.v_tbdTravelOk a
-              WHERE DDate = '#{date.strftime('%F')}'
+              WHERE  #{get_date_field(datetype)} = '#{date.strftime('%F')}'
               AND a.Flag in (0, 1)
               AND EXISTS (SELECT SellID FROM #{ticket_db_prefix(date)}.v_tbdTravelOkPro b
                           WHERE a.SellID = b.SellID AND b.CurID = 'N1')
@@ -107,5 +108,14 @@ class DayReportScript
                                AND DGroupRoomType = '网络用房')"""
     Rails.logger.debug { sql }
     return sql
+  end
+  
+  def get_date_field(datetype)
+     date_field = ''
+    if datetype == DATETYPE_BY_COMEDATE
+      date_field = 'DComeDate'
+    else
+      date_field = 'DDate'
+    end
   end
 end
