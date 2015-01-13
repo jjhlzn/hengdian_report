@@ -57,7 +57,7 @@ class YearlyProductionCompareScript
   def get_all_order_sql(from_date, to_date)
     sql =  <<-SQL
               SELECT * FROM #{ticket_db_prefix(from_date)}.v_tbdTravelOk a
-              WHERE DDate between '#{from_date.strftime('%F')}' and '#{to_date.strftime('%F')}'
+              WHERE DComeDate between '#{from_date.strftime('%F')}' and '#{to_date.strftime('%F')}'
                     AND a.Flag in (0, 1)
                     AND EXISTS(SELECT * FROM #{ticket_db_prefix(from_date)}.tbdGroupType b
                                WHERE a.DGroupType = b.DName AND a.DGroupTypeAssort = b.sType
@@ -70,7 +70,7 @@ class YearlyProductionCompareScript
   def get_ticket_order_sql(from_date, to_date)
     sql =  <<-SQL
               SELECT * FROM #{ticket_db_prefix(from_date)}.v_tbdTravelOk a
-              WHERE DDate between '#{from_date.strftime('%F')}' and '#{to_date.strftime('%F')}'
+              WHERE DComeDate between '#{from_date.strftime('%F')}' and '#{to_date.strftime('%F')}'
               AND a.Flag in (0, 1)
               AND NOT EXISTS (SELECT SellID FROM #{ticket_db_prefix(from_date)}.v_tbdTravelOkPro b
                               WHERE a.SellID = b.SellID AND b.CurID = 'N1')
@@ -85,7 +85,7 @@ class YearlyProductionCompareScript
   def get_hotel_order_sql(from_date, to_date)
     sql =  <<-SQL
               SELECT * FROM #{ticket_db_prefix(from_date)}.v_tbdTravelOk a
-              WHERE DDate between '#{from_date.strftime('%F')}' and '#{to_date.strftime('%F')}'
+              WHERE DComeDate between '#{from_date.strftime('%F')}' and '#{to_date.strftime('%F')}'
               AND a.Flag in (0, 1)
               AND EXISTS (SELECT SellID FROM #{ticket_db_prefix(from_date)}.v_tbdTravelOkPro b
                           WHERE a.SellID = b.SellID AND b.CurID = 'N1')
@@ -102,7 +102,7 @@ class YearlyProductionCompareScript
   def get_package_order_sql(from_date, to_date)
     sql = <<-SQL
               SELECT * FROM #{ticket_db_prefix(from_date)}.v_tbdTravelOk a
-              WHERE DDate between '#{from_date.strftime('%F')}' and '#{to_date.strftime('%F')}'
+              WHERE DComeDate between '#{from_date.strftime('%F')}' and '#{to_date.strftime('%F')}'
               AND a.Flag in (0, 1)
               AND EXISTS (SELECT SellID FROM #{ticket_db_prefix(from_date)}.v_tbdTravelOkPro b
                           WHERE a.SellID = b.SellID AND b.CurID = 'N1')
