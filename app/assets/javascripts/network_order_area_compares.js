@@ -30,7 +30,7 @@ $(document).ready(function() {
     var province_pie = new PieReportChart({id: 'province_pie',
         name: '省级比较',
         url: "/network_order_area_compares.json",
-        menus: [{type: 'year'}, {type: 'indicator'}, {type: 'yesorno', name: 'is_real_sell_info', desc: '是否实际售票数据'}, {type: 'topn'}],
+        menus: [{type: 'year'}, {type: 'daterange'}, {type: 'indicator'}, {type: 'topn'}],
         other_params: {type: 'province'},
         other_response_deal_function: response_deal_fuction,
         update_report_chart: update_report_chart
@@ -39,7 +39,7 @@ $(document).ready(function() {
     var city_pie = new PieReportChart({id: 'city_pie',
         name: '地区级市比较',
         url: "/network_order_area_compares.json",
-        menus: [{type: 'year'}, {type: 'indicator'}, {type: 'yesorno', name: 'is_real_sell_info', desc: '是否实际售票数据'}, {type: 'topn'}],
+        menus: [{type: 'year'}, {type: 'daterange'}, {type: 'indicator'},  {type: 'topn'}],
         other_params: {type: 'city'},
         other_response_deal_function: response_deal_fuction,
         update_report_chart: update_report_chart

@@ -150,21 +150,43 @@ ReportChart.prototype = {
             items = [{value: 'comedate', desc: '到达日期'},
                      {value: 'orderdate', desc: '预订日期'}]
             return this.create_menu_button(name, desc, default_val, items)
-        }
+        };
+
+
+        var create_date_range_menu_button = function(name, desc, default_val, items) {
+            var fromDate = $('<input>', {name: 'from_date', 'class': 'Wdate', type: 'text', style:'width:90px; height: 22px;'});
+            var endDate = $('<input>', {name: 'end_date', 'class': 'Wdate', type: 'text', style:'width:90px;  height: 22px;'});
+            fromDate.click(function(){
+                WdatePicker();
+            });
+            endDate.click(function(){
+                WdatePicker();
+            });
+            var button = $('<input>', {type: 'button', value: '确定', 'class': 'btn btn-primary btn-xs'});
+            var that = this;
+            button.click(function(){
+                that.params['from_date'] = fromDate.val();
+                that.params['end_date'] = endDate.val();
+                that.update_report_chart('','','');
+            });
+            return $('<span>').append(fromDate).append('至').append(endDate).append(button);
+        };
 
         var menu_mappings = [{type: 'indicator', func: create_indicator_menu_button},
             {type: 'year', func: create_year_menu_button},
             {type: 'topn', func: create_topn_menu_button},
             {type: 'yesorno', func: create_yesorno_menu_button},
             {type: 'ordertype', func: create_ordertype_menu_button},
-            {type: 'datetype', func: create_datetype_menu_button}];
+            {type: 'datetype', func: create_datetype_menu_button},
+            {type: 'daterange', func: create_date_range_menu_button}
+        ];
 
         var get_menu_func = function(type) {
             var i;
             for (i = 0; i < menu_mappings.length; i++)
                 if (type === menu_mappings[i]['type'])
                     return menu_mappings[i]['func'];
-        }
+        };
 
         var menu_buttons = [];
         var i;

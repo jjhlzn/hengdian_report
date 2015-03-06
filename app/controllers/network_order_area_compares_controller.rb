@@ -12,10 +12,12 @@ class NetworkOrderAreaComparesController < ApplicationController
         #查询数据库获取数据
         service = AreaCompareScript.new
         result_set= service.get_data(params[:year],
-                                            params[:type],
-                                            params[:indicator],
-                                            params[:is_real_sell_info] == '1',
-                                            params[:topn].to_i)
+                                    params[:from_date],
+                                    params[:end_date],
+                                    params[:type],
+                                    params[:indicator],
+                                    true,
+                                    params[:topn].to_i)
 
         return_data = {'datasets' => result_set[0],
                        'datasets_src' => result_set[1]}

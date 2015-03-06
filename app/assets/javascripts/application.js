@@ -13,6 +13,7 @@
 //= require jquery
 //= #require jquery_ujs
 //= #require turbolinks
+//= require My97DatePicker/WdatePicker.js
 //= require bootstrap/bootstrap.js
 //= require plugins/metisMenu/metisMenu.min
 //= require sb-admin-2
