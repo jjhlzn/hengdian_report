@@ -7,7 +7,6 @@ class AgentYearReportScript
   include Hengdian::Contants
   include PieStyle
 
-
   def get_data(year, indicator=INDICATOR_PEOPLE_COUNT, topn = 10)
     result_sets = execute_query(get_sql(DateTime.new(year, 1, 1), indicator))
     return deal_result_set(result_sets, 'AgentName', topn + 1, indicator)
