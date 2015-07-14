@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   get 'network_order_report/latest_30days_report'
   get 'network_order_yearly_reports/mobile_company_cmp'
   get 'network_order_today_reports/reserve'
+  get 'network_order_today_reports/official'
   get 'timer_task/init'
 
   resources :network_order_area_compares

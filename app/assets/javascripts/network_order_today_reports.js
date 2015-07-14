@@ -19,5 +19,12 @@ $(document).ready(function () {
         url: '/network_order_today_reports/reserve.json',
         menus: [{type: 'datetype'}, {type: 'indicator'}]
     }).send_request();
+
+    new LineReportChart({
+        id: 'official_line_panel',
+        name: '官网预订情况(包括使用订单和未使用订单)',
+        url: '/network_order_today_reports/official.json',
+        menus: [{type: 'datetype'}, {type: 'indicator'}]
+    }).send_request();
 });
 
