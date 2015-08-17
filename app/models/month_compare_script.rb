@@ -60,7 +60,8 @@ class MonthCompareScript
     end
 
 
-    sql =  """SELECT MONTH(DComeDate) as month, SUM(#{indicator}) as #{indicator} FROM (
+    sql =   <<-SQL
+            SELECT MONTH(DComeDate) as month, SUM(#{indicator}) as #{indicator} FROM (
                       SELECT DComeDate, #{field} as #{indicator} FROM #{ticket_db_prefix(date)}.v_tbdTravelOK a inner join
                             #{ticket_db_prefix(date)}.v_tbdTravelOkOther b on a.SellID = b.SellID
                             WHERE Flag in (1)
@@ -71,7 +72,8 @@ class MonthCompareScript
                                   AND DComeDate between '#{year}-1-1' and '#{year}-12-31'
                             GROUP BY DComeDate) as a
               Group by MONTH(DComeDate)
-              ORDER BY month"""
+              ORDER BY month
+            SQL
 
     Rails.logger.debug { sql }
     return sql
