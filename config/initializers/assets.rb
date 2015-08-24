@@ -12,3 +12,5 @@ Rails.application.config.assets.precompile += %w( network_order_today_ticket_rep
 Rails.application.config.assets.precompile += %w( network_order_yearly_agent_reports.js )
 Rails.application.config.assets.precompile += %w( network_order_yearly_reports.js )
 Rails.application.config.assets.precompile += %w( network_order_month_reports.js )
+Rails.application.config.assets.precompile += %w( group_order_day_reports.js )
+Rails.application.config.assets.precompile += %w( group_order_month_reports.js )

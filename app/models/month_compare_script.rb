@@ -9,10 +9,10 @@ class MonthCompareScript
   include DBUtils
   include LineSytle
 
-  def get_data(years, indicator, order_type)
+  def get_data(years, use_room_type, indicator, order_type)
     result = []
     years.each_with_index do |year|
-      result_sets = execute_query(get_sql(indicator, order_type, year))
+      result_sets = execute_query(get_sql(indicator, use_room_type, order_type, year))
       result_sets = NetworkOrderReportHelper.insert_defult_values_if_not_exists(result_sets,
                                                                   'month',
                                                                   indicator,
@@ -28,7 +28,7 @@ class MonthCompareScript
   end
 
   private
-  def get_sql(indicator, order_type,  year)
+  def get_sql(indicator, use_room_type, order_type,  year)
     date = DateTime.new(year, 1, 1)
     field = ''
     order_type_where_clause = ''
@@ -67,7 +67,7 @@ class MonthCompareScript
                             WHERE Flag in (1)
                                   AND EXISTS(SELECT b.DName FROM #{ticket_db_prefix(date)}.tbdGroupType b
                                                      WHERE a.DGroupType = b.DName AND a.DGroupTypeAssort = b.sType
-                                                           AND DGroupRoomType = '网络用房')
+                                                           AND DGroupRoomType = '#{use_room_type}')
                                   #{order_type_where_clause}
                                   AND DComeDate between '#{year}-1-1' and '#{year}-12-31'
                             GROUP BY DComeDate) as a
