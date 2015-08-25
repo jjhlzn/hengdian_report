@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   get 'network_order_today_reports/official'
   get 'group_order_day_reports/reserve'
   get 'group_order_day_reports/latest_30days_report'
+  get 'all_yearly_reports/get_selltype_compare'
   get 'timer_task/init'
 
   resources :network_order_area_compares
@@ -16,6 +17,7 @@ Rails.application.routes.draw do
   resources :network_order_month_reports
   resources :group_order_day_reports
   resources :group_order_month_reports
+  resources :all_yearly_reports
   resources :timer_task
 
   # The priority is based upon order of creation: first created -> highest priority.

@@ -7,6 +7,7 @@ module PieStyle
 
   private
   def deal_result_set(rows, field_name, topN, indicator)
+    Rails.logger.debug {rows}
     # 处理数据库结果
     total = (rows.map { |x| x[indicator] }).reduce(0, :+)
 
