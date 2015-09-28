@@ -57,7 +57,7 @@ class DayReportScript
     end
   end
   def get_all_order_sql(date, datetype)
-    sql =  """SELECT * FROM #{ticket_db_prefix(date)}.v_tbdTravelOk a
+    sql =  """SELECT Sellid, DComeDate, DDate, DAmount, DDjNumber FROM #{ticket_db_prefix(date)}.v_tbdTravelOk a
               WHERE #{get_date_field(datetype)} = '#{date.strftime('%F')}'
                     AND a.Flag in (0, 1)
                     AND EXISTS(SELECT * FROM #{ticket_db_prefix(date)}.tbdGroupType b
@@ -68,7 +68,7 @@ class DayReportScript
   end
 
   def get_ticket_order_sql(date, datetype)
-    sql =  """SELECT * FROM #{ticket_db_prefix(date)}.v_tbdTravelOk a
+    sql =  """SELECT Sellid, DComeDate, DDate, DAmount, DDjNumber FROM #{ticket_db_prefix(date)}.v_tbdTravelOk a
               WHERE  #{get_date_field(datetype)} = '#{date.strftime('%F')}'
               AND a.Flag in (0, 1)
               AND NOT EXISTS (SELECT SellID FROM #{ticket_db_prefix(date)}.v_tbdTravelOkPro b
@@ -81,7 +81,7 @@ class DayReportScript
   end
 
   def get_hotel_order_sql(date, datetype)
-    sql =  """SELECT * FROM #{ticket_db_prefix(date)}.v_tbdTravelOk a
+    sql =  """SELECT Sellid, DComeDate, DDate, DAmount, DDjNumber FROM #{ticket_db_prefix(date)}.v_tbdTravelOk a
               WHERE  #{get_date_field(datetype)} = '#{date.strftime('%F')}'
               AND a.Flag in (0, 1)
               AND EXISTS (SELECT SellID FROM #{ticket_db_prefix(date)}.v_tbdTravelOkPro b
@@ -96,7 +96,7 @@ class DayReportScript
   end
 
   def get_package_order_sql(date, datetype)
-    sql =  """SELECT * FROM #{ticket_db_prefix(date)}.v_tbdTravelOk a
+    sql =  """SELECT Sellid, DComeDate, DDate, DAmount, DDjNumber FROM #{ticket_db_prefix(date)}.v_tbdTravelOk a
               WHERE  #{get_date_field(datetype)} = '#{date.strftime('%F')}'
               AND a.Flag in (0, 1)
               AND EXISTS (SELECT SellID FROM #{ticket_db_prefix(date)}.v_tbdTravelOkPro b
