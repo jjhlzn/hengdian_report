@@ -26,5 +26,19 @@ $(document).ready(function () {
         url: '/network_order_today_reports/official.json',
         menus: [{type: 'datetype'}, {type: 'indicator'}]
     }).send_request();
+
+    new LineReportChart({
+        id: 'official_website_line_panel',
+        name: '官网网站预订情况对比(包括使用订单和未使用订单)',
+        url: '/network_order_today_reports/official_website.json',
+        menus: [{type: 'datetype'}, {type: 'indicator'}]
+    }).send_request();
+
+    new LineReportChart({
+        id: 'official_taobao_line_panel',
+        name: '淘宝预订情况对比(包括使用订单和未使用订单)',
+        url: '/network_order_today_reports/official_taobao.json',
+        menus: [{type: 'datetype'}, {type: 'indicator'}]
+    }).send_request();
 });
 

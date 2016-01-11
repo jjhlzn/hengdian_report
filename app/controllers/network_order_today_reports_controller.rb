@@ -45,5 +45,31 @@ class NetworkOrderTodayReportsController < ApplicationController
     end
   end
 
+  def official_website
+    respond_to do |format|
+      format.json do
+        service = DayOfficialScript.new
+        agent = {agentName: '横店影视城网络运营中心', agentNo:'330783018100'}
+        dates = handle_days(DateTime.now.days_ago(10), DateTime.now.days_since(10))
+        years = [DateTime.now.year, DateTime.now.year - 1]
+        result = service.get_data_official_website(params[:indicator], params[:datetype], agent, years, dates[0], dates[1])
+        render json: make_success_json_resp(result)
+      end
+    end
+  end
+
+  def official_taobao
+    respond_to do |format|
+      format.json do
+        service = DayOfficialScript.new
+        agent = {agentName: '淘宝旗舰店', agentNo: '330783021600'}
+        dates = handle_days(DateTime.now.days_ago(10), DateTime.now.days_since(10))
+        years = [DateTime.now.year, DateTime.now.year - 1]
+        result = service.get_data_official_website(params[:indicator], params[:datetype], agent, years, dates[0], dates[1])
+        render json: make_success_json_resp(result)
+      end
+    end
+  end
+
 
 end

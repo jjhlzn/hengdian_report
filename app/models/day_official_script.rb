@@ -29,9 +29,31 @@ class DayOfficialScript
     }
   end
 
+  def get_data_official_website(indicator, datetype, agent, years, from_date, to_date)
+    raise "from_date必须和to_date在同一年份" unless from_date.year == to_date.year
+    result = []
+    years.each_with_index do |year, index|
+      from_date = DateTime.new(year, from_date.month, from_date.day)
+      to_date = DateTime.new(year, to_date.month, to_date.day)
+      result_sets = execute_query(get_sql(indicator, datetype, agent[:agentNo], from_date, to_date))
+      result_sets = NetworkOrderReportHelper.insert_defult_values_if_not_exists(result_sets,
+                                                                                'date',
+                                                                                indicator,
+                                                                                from_date,
+                                                                                to_date) {|x, y| x.strftime('%F') == y.strftime('%F')}
+      result << {label: year,
+                 data: result_sets.map { |x| x[indicator].to_i }}
+    end
+    return {
+        labels: (from_date..to_date).map { |x| x.strftime('%m-%d') },
+        datasets: convert_to_report_format(result)
+    }
+  end
+
+
   private
   def get_sql(indicator, datetype, agent, from_date, to_date)
-    year = DateTime.now.year
+    year = from_date.year
 
     indicator_field = ''
     datetype_field = ''

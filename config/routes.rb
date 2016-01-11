@@ -4,6 +4,8 @@ Rails.application.routes.draw do
   get 'network_order_yearly_reports/mobile_company_cmp'
   get 'network_order_today_reports/reserve'
   get 'network_order_today_reports/official'
+  get 'network_order_today_reports/official_website'
+  get 'network_order_today_reports/official_taobao'
   get 'group_order_day_reports/reserve'
   get 'group_order_day_reports/latest_30days_report'
   get 'all_yearly_reports/get_selltype_compare'
