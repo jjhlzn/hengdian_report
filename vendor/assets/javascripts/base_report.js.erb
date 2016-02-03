@@ -100,7 +100,9 @@ ReportChart.prototype = {
         var create_year_menu_button = function(name, desc, default_val, items) {
             name = name || 'year';
             desc = desc || '选择年份';
-            items = items || [{value: '2015', desc: '2015'},
+            items = items || [
+                              {value: '2016', desc: '2016'},
+                              {value: '2015', desc: '2015'},
                               {value: '2014', desc: '2014'},
                               {value: '2013', desc: '2013'}];
             return this.create_menu_button(name, desc, default_val, items);
