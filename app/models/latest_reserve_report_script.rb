@@ -14,6 +14,9 @@ class LatestReserveReportScript
     result = []
     years.each_with_index do |year, index|
       from_date = DateTime.new(year, from_date.month, from_date.day)
+      Rails.logger.debug {year}
+      Rails.logger.debug {to_date.month}
+      Rails.logger.debug {to_date.day}
       to_date = DateTime.new(year, to_date.month, to_date.day)
       result_sets = execute_query(get_sql(indicator, datetype, use_room_type, is_only_used_orders, year, from_date, to_date))
       result_sets = NetworkOrderReportHelper.insert_defult_values_if_not_exists(result_sets,
