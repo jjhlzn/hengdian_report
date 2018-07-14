@@ -8,7 +8,7 @@ group :development, :test do
   gem 'sqlite3'
   gem 'rspec-rails'
   #gem 'guard-rspec'
-  gem 'spork-rails', github: 'railstutorial/spork-rails'
+  #gem 'spork-rails', github: 'railstutorial/spork-rails'
   #gem 'guard-spork'
   gem 'childprocess'
 end
@@ -19,11 +19,12 @@ group :test do
   gem 'factory_girl_rails'
 end
 
+gem 'tiny_tds'
 #gem 'railties'
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.3'
-# Use Uglifier as compressor for JavaScript assets
+#Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 # Use CoffeeScript for .js.coffee assets and views
 gem 'coffee-rails', '~> 4.0.0'
@@ -45,7 +46,7 @@ gem 'spring',        group: :development
 gem 'bootstrap-sass', '2.3.2.0'
 gem 'bcrypt-ruby'
 gem 'bcrypt'
-gem 'faker'
+#gem 'faker'
 gem 'will_paginate'
 gem 'bootstrap-will_paginate'
 
@@ -57,21 +58,21 @@ gem 'unicorn'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
-gem 'capistrano', '~> 3.2.0'
-gem 'capistrano-rails'
+#gem 'capistrano', '~> 3.2.0'
+#gem 'capistrano-rails'
 
 
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 
-gem 'quiet_assets', group: :development
-gem 'thin', group: :development
+#gem 'quiet_assets', group: :development
+#gem 'thin', group: :development
 
-gem 'activeadmin', github: 'activeadmin'
+#gem 'activeadmin', github: 'activeadmin'
 gem 'devise'
 
 gem 'less'
-gem 'less-rails'
+gem "less-rails", "~> 2.8.0"
 gem 'therubyracer'
+gem 'json' ##, '1.8.1'
 
-gem 'tiny_tds'
